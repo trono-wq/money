@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- MAIN ACTION BAR - Layout, Position-->
+    <LinearLayout
+        android:id="@+id/menu"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- MAIN WEEK - Layout, Font -->
+        <TextView
+            android:id="@+id/week"
+            android:text="@string/week"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#fbd722"/>
+
+        <!-- SEPARATOR - Layout, Font -->
+        <TextView
+            android:text="@string/separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- HISTORY - Layout, Font, Interact -->
+        <TextView
+            android:id="@+id/history"
+            android:text="@string/history"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

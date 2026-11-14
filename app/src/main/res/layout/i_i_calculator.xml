@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- MAIN ACTION BAR - Layout, Position -->
+    <LinearLayout
+        android:id="@id/main_action_bar"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- MAIN CALCULATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_calculator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#fbd722"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- MONEY - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_money"
+            android:text="@string/ab_money"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- NOTES - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_notes"
+            android:text="@string/ab_notes"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- STATUS - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_status"
+            android:text="@string/ab_status"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <!-- DISPLAY - Layout, Position, Styling, Hint -->
+    <TextView
+        android:id="@+id/calculator"
+
+        android:layout_marginTop="48dp"
+        app:layout_constraintTop_toBottomOf="@id/main_action_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:gravity="center_vertical|end"
+
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:padding="5dp"
+        android:background="@drawable/c_d"
+
+        android:hint="@string/c_hint"
+        android:textColorHint="#999999"/>
+
+    <!-- CALCULATOR BUTTONS - Layout, Table -->
+    <GridLayout
+        android:id="@+id/calculator_buttons"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintTop_toBottomOf="@id/calculator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="5"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="false"
+        android:padding="0dp">
+
+        <!-- ROW 1 -->
+
+        <!-- H - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_h"
+            android:text="@string/c_h"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- C - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_c"
+            android:text="@string/c_c"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- BACKSPACE - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_backspace"
+            android:text="@string/c_backspace"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b" />
+
+        <!-- DIVIDE - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:text="@string/c_divide"
+            android:id="@+id/c_divide"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_button_symbols"/>
+
+        <!-- ROW 2 -->
+
+        <!-- 7 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_7"
+            android:text="@string/c_7"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 8 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_8"
+            android:text="@string/c_8"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 9 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_9"
+            android:text="@string/c_9"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b" />
+
+        <!-- MULTIPLY - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_multiply"
+            android:text="@string/c_multiply"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_button_symbols"/>
+
+        <!-- ROW 3 -->
+
+        <!-- 4 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_4"
+            android:text="@string/c_4"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 5 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_5"
+            android:text="@string/c_5"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 6 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_6"
+            android:text="@string/c_6"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- SUBTRACT - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_subtract"
+            android:text="@string/c_subtract"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_button_symbols"/>
+
+        <!-- ROW 4 -->
+
+        <!-- 1 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_1"
+            android:text="@string/c_1"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 2 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_2"
+            android:text="@string/c_2"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 3 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_3"
+            android:text="@string/c_3"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- ADD - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_add"
+            android:text="@string/c_add"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_button_symbols"/>
+
+        <!-- ROW 5 -->
+
+        <!-- PARENTHESIS - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_parenthesis"
+            android:text="@string/c_parenthesis"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- 0 - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_0"
+            android:text="@string/c_0"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- DECIMAL - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_decimal"
+            android:text="@string/c_decimal"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b"/>
+
+        <!-- EQUAL - Layout, Styling, Background -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/c_equal"
+            android:text="@string/c_equal"
+
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="5dp"
+
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25sp"
+
+            android:backgroundTint="@null"
+            android:background="@drawable/c_b_equal"/>
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

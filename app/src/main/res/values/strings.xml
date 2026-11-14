@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">        money</string>
+
+    <string name="ab_money">        Money</string>
+    <string name="ab_calculator">   Calculator</string>
+    <string name="ab_status">       Status</string>
+    <string name="ab_notes">        Notes</string>
+    <string name="ab_separator">    •</string>
+
+    <string name="b_save">          Save</string>
+
+    <string name="b_ab_history">    Full History</string>
+    <string name="b_ab_week">       Week</string>
+    <string name="b_ab_wm">         Week-month</string>
+    <string name="b_ab_credit">     Credit</string>
+    <string name="b_ab_debt">       Debt</string>
+
+    <string name="m_lb_date">       Enter date:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_allowance">  Enter allowance:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_debt">       Enter debt:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_debt_n">     ㅤㅤㅤㅤEnter name:</string>
+    <string name="m_lb_credit">     Enter credit:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_credit_n">   ㅤㅤㅤㅤEnter name:</string>
+    <string name="m_lb_spent">      Enter money spent:ㅤㅤㅤㅤ</string>
+
+    <string name="m_i_date">        MM / DD / YYYY (Day)ㅤㅤㅤㅤ</string>
+    <string name="m_i_allowance">   -ㅤㅤㅤㅤ</string>
+    <string name="m_i_debt">        -ㅤㅤㅤㅤ</string>
+    <string name="m_i_debt_n">      -ㅤㅤㅤㅤ</string>
+    <string name="m_i_credit">      -ㅤㅤㅤㅤ</string>
+    <string name="m_i_credit_n">    -ㅤㅤㅤㅤ</string>
+    <string name="m_i_spent">       -ㅤㅤㅤㅤ</string>
+
+    <string name="m_b_debt_p">      +</string>
+    <string name="m_b_credit_p">    +</string>
+
+    <string name="s_lb_spent">      Total spent:</string>
+    <string name="s_lb_debt">       Debt:</string>
+    <string name="s_lb_credit">     Credit:</string>
+    <string name="s_lb_allowance">  Total allowance:</string>
+    <string name="s_lb_leftover">   Leftover:</string>
+
+    <string name="c_hint">0</string>
+    <string name="c_h">H</string>
+    <string name="c_c">C</string>
+    <string name="c_backspace">&lt;</string>
+    <string name="c_7">7</string>
+    <string name="c_8">8</string>
+    <string name="c_9">9</string>
+    <string name="c_4">4</string>
+    <string name="c_5">5</string>
+    <string name="c_6">6</string>
+    <string name="c_1">1</string>
+    <string name="c_2">2</string>
+    <string name="c_3">3</string>
+    <string name="c_parenthesis">( )</string>
+    <string name="c_0">0</string>
+    <string name="c_decimal">.</string>
+    <string name="c_divide">/</string>
+    <string name="c_multiply">×</string>
+    <string name="c_subtract">—</string>
+    <string name="c_add">+</string>
+    <string name="c_equal">=</string>
+
+    <string name="s_d_spent">       —</string>
+    <string name="s_d_debt">        —</string>
+    <string name="s_d_credit">      —</string>
+    <string name="s_d_allowance">   —</string>
+    <string name="s_d_leftover">    —</string>
+</resources>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- MAIN ACTION BAR - Layout, Position -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- MAIN STATUS - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_status"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#fbd722"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- MONEY - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_money"
+            android:text="@string/ab_money"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- CALCULATOR - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_calculator"
+            android:text="@string/ab_calculator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- NOTES - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_notes"
+            android:text="@string/ab_notes"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/places_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp">
+
+            <!-- LEFT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/status_spent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_debt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_credit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_allowance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_leftover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
+            <!-- RIGHT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/status_spent_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_debt_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_credit_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_allowance_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:text="@string/status_leftover_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
