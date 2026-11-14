@@ -5,235 +5,223 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- MAIN ACTION BAR - Layout, Position -->
+    <!-- MAIN ACTION BAR -->
     <LinearLayout
+        android:id="@+id/main_action_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- MAIN STATUS - Layout, Styling -->
+        <!-- MAIN STATUS -->
         <TextView
             android:text="@string/ab_status"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="5dp"
             android:textStyle="bold"
             android:textSize="25sp"
             android:textColor="#fbd722"/>
 
-        <!-- SEPARATOR - Layout, Styling -->
+        <!-- SEPARATOR -->
         <TextView
             android:text="@string/ab_separator"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="3dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="#d39a00"/>
 
-        <!-- MONEY - Layout, Styling, Interact -->
+        <!-- MONEY -->
         <TextView
             android:id="@+id/ab_money"
             android:text="@string/ab_money"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="5dp"
             android:textSize="15sp"
             android:textColor="#d39a00"
-
             android:clickable="true"
             android:focusable="true"/>
 
-        <!-- SEPARATOR - Layout, Styling -->
+        <!-- SEPARATOR -->
         <TextView
             android:text="@string/ab_separator"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="3dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="#d39a00"/>
 
-        <!-- CALCULATOR - Layout, Styling, Interact -->
+        <!-- CALCULATOR -->
         <TextView
             android:id="@+id/ab_calculator"
             android:text="@string/ab_calculator"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="5dp"
             android:textSize="15sp"
             android:textColor="#d39a00"
-
             android:clickable="true"
             android:focusable="true"/>
 
-        <!-- SEPARATOR - Layout, Styling -->
+        <!-- SEPARATOR -->
         <TextView
             android:text="@string/ab_separator"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="3dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="#d39a00"/>
 
-        <!-- NOTES - Layout, Styling, Interact -->
+        <!-- NOTES -->
         <TextView
             android:id="@+id/ab_notes"
             android:text="@string/ab_notes"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:padding="5dp"
             android:textSize="15sp"
             android:textColor="#d39a00"
-
             android:clickable="true"
             android:focusable="true"/>
     </LinearLayout>
 
+    <!-- PLACES TABLE -->
+    <LinearLayout
+        android:id="@+id/places_action_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        app:layout_constraintTop_toBottomOf="@id/main_action_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- LEFT COLUMN -->
         <LinearLayout
-            android:id="@+id/places_action_bar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="40dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- LEFT COLUMN -->
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:text="@string/s_d_spent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
 
-                <TextView
-                    android:text="@string/status_spent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_debt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_credit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_allowance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_leftover"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-            </LinearLayout>
-
-            <!-- RIGHT COLUMN -->
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:text="@string/s_d_debt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
 
-                <TextView
-                    android:text="@string/status_spent_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="end"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
+            <TextView
+                android:text="@string/s_d_credit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
 
-                <TextView
-                    android:text="@string/status_debt_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="end"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
+            <TextView
+                android:text="@string/s_d_allowance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
 
-                <TextView
-                    android:text="@string/status_credit_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="end"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_allowance_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="end"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:text="@string/status_leftover_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="end"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
-                    android:padding="5dp" />
-
-            </LinearLayout>
+            <TextView
+                android:text="@string/s_d_leftover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
 
         </LinearLayout>
+
+        <!-- RIGHT COLUMN -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/s_s_spent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:text="@string/s_s_debt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:text="@string/s_s_credit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:text="@string/s_s_allowance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:text="@string/s_s_leftover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

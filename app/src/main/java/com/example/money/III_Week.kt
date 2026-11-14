@@ -34,6 +34,6 @@ class Week : AppCompatActivity() {
             insets
         }
 
-        findViewById<TextView>(R.id.ab_history).setOnClickListener {finish()}
+        findViewById<TextView>(R.id.b_ab_history).setOnClickListener {finish()}
     }
 }

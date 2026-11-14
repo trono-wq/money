@@ -40,31 +40,37 @@
     <string name="s_lb_allowance">  Total allowance:</string>
     <string name="s_lb_leftover">   Leftover:</string>
 
-    <string name="c_hint">0</string>
-    <string name="c_h">H</string>
-    <string name="c_c">C</string>
-    <string name="c_backspace">&lt;</string>
-    <string name="c_7">7</string>
-    <string name="c_8">8</string>
-    <string name="c_9">9</string>
-    <string name="c_4">4</string>
-    <string name="c_5">5</string>
-    <string name="c_6">6</string>
-    <string name="c_1">1</string>
-    <string name="c_2">2</string>
-    <string name="c_3">3</string>
-    <string name="c_parenthesis">( )</string>
-    <string name="c_0">0</string>
-    <string name="c_decimal">.</string>
-    <string name="c_divide">/</string>
-    <string name="c_multiply">×</string>
-    <string name="c_subtract">—</string>
-    <string name="c_add">+</string>
-    <string name="c_equal">=</string>
+    <string name="c_hint">          0</string>
+    <string name="c_h">             H</string>
+    <string name="c_c">             C</string>
+    <string name="c_backspace">     &lt;</string>
+    <string name="c_7">             7</string>
+    <string name="c_8">             8</string>
+    <string name="c_9">             9</string>
+    <string name="c_4">             4</string>
+    <string name="c_5">             5</string>
+    <string name="c_6">             6</string>
+    <string name="c_1">             1</string>
+    <string name="c_2">             2</string>
+    <string name="c_3">             3</string>
+    <string name="c_parenthesis">   ( )</string>
+    <string name="c_0">             0</string>
+    <string name="c_decimal">       .</string>
+    <string name="c_divide">        /</string>
+    <string name="c_multiply">      ×</string>
+    <string name="c_subtract">      —</string>
+    <string name="c_add">           +</string>
+    <string name="c_equal">         =</string>
 
-    <string name="s_d_spent">       —</string>
-    <string name="s_d_debt">        —</string>
-    <string name="s_d_credit">      —</string>
-    <string name="s_d_allowance">   —</string>
-    <string name="s_d_leftover">    —</string>
+    <string name="s_d_spent">       Total spent</string>
+    <string name="s_d_debt">        Debt</string>
+    <string name="s_d_credit">      Credit</string>
+    <string name="s_d_allowance">   Total allowance</string>
+    <string name="s_d_leftover">    Leftover</string>
+
+    <string name="s_s_spent">       —</string>
+    <string name="s_s_debt">        —</string>
+    <string name="s_s_credit">      —</string>
+    <string name="s_s_allowance">   —</string>
+    <string name="s_s_leftover">    —</string>
 </resources>

@@ -257,7 +257,8 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:inputType="date"
-                        android:importantForAutofill="no"/>
+                        android:importantForAutofill="no"
+                        android:background="@null"/>
 
                     <EditText
                         android:id="@+id/m_i_allowance"

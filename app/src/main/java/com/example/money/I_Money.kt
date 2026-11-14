@@ -18,7 +18,7 @@ class Money : AppCompatActivity() {
 
         setContentView(R.layout.i_money)
 
-        val date = findViewById<EditText>(R.id.input_date)
+        val date = findViewById<EditText>(R.id.m_i_date)
 
         date.setOnClickListener {
             val calendar = Calendar.getInstance()
