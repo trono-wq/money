@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/i_i_calculator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -112,7 +113,7 @@
     </LinearLayout>
 
     <!-- DISPLAY - Layout, Position, Styling, Hint -->
-    <TextView
+    <EditText
         android:id="@+id/calculator"
 
         android:layout_marginTop="48dp"
@@ -126,11 +127,59 @@
 
         android:textColor="#FFFFFF"
         android:textSize="25sp"
-        android:padding="5dp"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="5dp"
         android:background="@drawable/c_d"
 
         android:hint="@string/c_hint"
-        android:textColorHint="#999999"/>
+        android:textColorHint="#999999"
+
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:cursorVisible="true"
+        android:inputType="textNoSuggestions"/>
+
+    <!-- HISTORY PANEL - Layout -->
+    <LinearLayout
+        android:id="@+id/history_panel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="20dp"
+
+        android:orientation="vertical"
+        android:padding="12dp"
+
+        android:background="@drawable/history_panel_background"
+        android:elevation="10dp"
+        android:visibility="gone"
+
+        app:layout_constraintTop_toBottomOf="@id/calculator_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- HISTORY ITEMS - Scroll -->
+        <ScrollView
+            android:id="@+id/history_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="false"
+            android:scrollbars="vertical"
+            android:overScrollMode="ifContentScrolls">
+
+            <LinearLayout
+                android:id="@+id/history_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="top" />
+        </ScrollView>
+
+    </LinearLayout>
 
     <!-- CALCULATOR BUTTONS - Layout, Table -->
     <GridLayout
@@ -186,7 +235,10 @@
             android:textSize="25sp"
 
             android:backgroundTint="@null"
-            android:background="@drawable/c_b"/>
+            android:background="@drawable/c_b"
+
+            android:foreground="?attr/selectableItemBackground"
+            android:foregroundTint="#666666"/>
 
         <!-- BACKSPACE - Layout, Styling, Background -->
         <androidx.appcompat.widget.AppCompatButton
@@ -203,12 +255,12 @@
             android:textSize="25sp"
 
             android:backgroundTint="@null"
-            android:background="@drawable/c_b" />
+            android:background="@drawable/c_b"/>
 
         <!-- DIVIDE - Layout, Styling, Background -->
         <androidx.appcompat.widget.AppCompatButton
-            android:text="@string/c_divide"
             android:id="@+id/c_divide"
+            android:text="@string/c_divide"
 
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -273,7 +325,7 @@
             android:textSize="25sp"
 
             android:backgroundTint="@null"
-            android:background="@drawable/c_b" />
+            android:background="@drawable/c_b"/>
 
         <!-- MULTIPLY - Layout, Styling, Background -->
         <androidx.appcompat.widget.AppCompatButton
@@ -501,5 +553,7 @@
 
             android:backgroundTint="@null"
             android:background="@drawable/c_b_equal"/>
+
     </GridLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
