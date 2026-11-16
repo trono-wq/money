@@ -31,8 +31,9 @@
     <string name="m_i_credit_n">    -ㅤㅤㅤㅤ</string>
     <string name="m_i_spent">       -ㅤㅤㅤㅤ</string>
 
-    <string name="m_b_debt_p">      +</string>
-    <string name="m_b_credit_p">    +</string>
+    <string name="m_b_date">        T</string>
+    <string name="m_b_debt">        +</string>
+    <string name="m_b_credit">      +</string>
 
     <string name="s_lb_spent">      Total spent:</string>
     <string name="s_lb_debt">       Debt:</string>
@@ -73,4 +74,6 @@
     <string name="s_s_credit">      —</string>
     <string name="s_s_allowance">   —</string>
     <string name="s_s_leftover">    —</string>
+
+    <string name="n_input">         Notes</string>
 </resources>

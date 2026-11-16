@@ -133,6 +133,8 @@
             android:layout_marginTop="0dp">
 
             <EditText
+                android:id="@+id/n_input"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|start"
@@ -146,7 +148,7 @@
                 android:textColor="#FFFFFF"
                 android:textColorHint="#999999"
                 android:textSize="15sp"
-                android:hint="@string/ab_notes"/>
+                android:hint="@string/n_input"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
