@@ -1,158 +1,54 @@
 
 package com.example.money
 
-import android.os.Bundle
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.View
-import android.widget.TextView
-import android.widget.EditText
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
-import android.app.DatePickerDialog
-import java.util.Calendar
-import java.util.Locale
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ViewCompat
+import java.util.Calendar
+import java.util.Locale
 
 class Money : AppCompatActivity() {
+
+    private data class InputPair(
+        val amount: EditText,
+        val name: EditText
+    )
+
+    private val debtInputs = mutableListOf<InputPair>()
+    private val creditInputs = mutableListOf<InputPair>()
+
+    private lateinit var dateInput: EditText
+    private lateinit var allowanceInput: EditText
+    private lateinit var spentInput: EditText
+    private lateinit var saveButton: Button
+
+    private lateinit var enterBar: LinearLayout
+    private lateinit var inputBar: LinearLayout
+
+    private lateinit var debtLabelAnchor: View
+    private lateinit var debtInputAnchor: View
+    private lateinit var creditLabelAnchor: View
+    private lateinit var creditInputAnchor: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.i_money)
 
-        // DATE BUTTON - Interact
-        val dateButton = findViewById<Button>(R.id.m_b_date)
-        val dateInput = findViewById<EditText>(R.id.m_i_date)
-
-        dateButton.setOnClickListener {
-            val today = java.text.SimpleDateFormat(
-                "dd / MM / yyyy (EEEE)",
-                Locale.ENGLISH
-            ).format(java.util.Date())
-
-            dateInput.setText(today)
-        }
-
-        val date = findViewById<EditText>(R.id.m_i_date)
-
-        // FORMAT NUMBER INPUT
-        formatNumberInput(findViewById(R.id.m_i_allowance))
-        formatNumberInput(findViewById(R.id.m_i_debt))
-        formatNumberInput(findViewById(R.id.m_i_credit))
-        formatNumberInput(findViewById(R.id.m_i_spent))
-
-        // DATE PICKER - Interact
-        date.setOnClickListener {
-            val calendar = Calendar.getInstance()
-
-            DatePickerDialog(
-                this,
-                { _, year, month, day ->
-                    date.setText(
-                        String.format(
-                            Locale.US,
-                            "%02d / %02d / %04d (%s)",
-                            day,
-                            month + 1,
-                            year,
-                            Calendar.getInstance().apply {
-                                set(year, month, day)
-                            }.getDisplayName(
-                                Calendar.DAY_OF_WEEK,
-                                Calendar.LONG,
-                                Locale.US
-                            )
-                        )
-                    )
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        // DYNAMIC ENTRIES - Layout
-        val enterBar = findViewById<LinearLayout>(R.id.enter_bar)
-        val inputBar = findViewById<LinearLayout>(R.id.input_bar)
-
-        // DEBT - Position Anchors
-        val debtLabelAnchor = enterBar.getChildAt(4)
-        val debtInputAnchor = findViewById<EditText>(R.id.m_i_credit)
-
-        // CREDIT - Position Anchors
-        val creditLabelAnchor = enterBar.getChildAt(6)
-        val creditInputAnchor = findViewById<EditText>(R.id.m_i_spent)
-
-        // DEBT - Initial Inputs
-        var latestDebtAmount = findViewById<EditText>(R.id.m_i_debt)
-        var latestDebtName = findViewById<EditText>(R.id.m_i_debt_n)
-
-        // CREDIT - Initial Inputs
-        var latestCreditAmount = findViewById<EditText>(R.id.m_i_credit)
-        var latestCreditName = findViewById<EditText>(R.id.m_i_credit_n)
-
-        // DEBT BUTTON - Interact
-        findViewById<Button>(R.id.m_b_debt).setOnClickListener {
-
-            if (
-                latestDebtAmount.text.toString().isBlank() ||
-                latestDebtName.text.toString().isBlank()
-            ) return@setOnClickListener
-
-            val newEntry = addDynamicEntry(
-                enterBar,
-                inputBar,
-                debtLabelAnchor,
-                debtInputAnchor,
-                R.string.m_lb_debt,
-                R.string.m_lb_debt_n,
-                R.string.m_i_debt,
-                R.string.m_i_debt_n,
-                Color.rgb(102, 102, 102)
-            )
-
-            formatNumberInput(newEntry.first)
-
-            latestDebtAmount = newEntry.first
-            latestDebtName = newEntry.second
-        }
-
-        // CREDIT BUTTON - Interact
-        findViewById<Button>(R.id.m_b_credit).setOnClickListener {
-
-            if (
-                latestCreditAmount.text.toString().isBlank() ||
-                latestCreditName.text.toString().isBlank()
-            ) return@setOnClickListener
-
-            val newEntry = addDynamicEntry(
-                enterBar,
-                inputBar,
-                creditLabelAnchor,
-                creditInputAnchor,
-                R.string.m_lb_credit,
-                R.string.m_lb_credit_n,
-                R.string.m_i_credit,
-                R.string.m_i_credit_n,
-                Color.rgb(102, 102, 102)
-            )
-
-            formatNumberInput(newEntry.first)
-
-            latestCreditAmount = newEntry.first
-            latestCreditName = newEntry.second
-        }
-
-        // SYSTEM BARS - Styling
         supportActionBar?.hide()
-
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
         window.setBackgroundDrawableResource(android.R.color.black)
@@ -177,7 +73,201 @@ class Money : AppCompatActivity() {
             insets
         }
 
-        // NAVIGATION - Interact
+        // INPUTS
+
+        dateInput = findViewById(R.id.m_i_date)
+        allowanceInput = findViewById(R.id.m_i_allowance)
+        spentInput = findViewById(R.id.m_i_spent)
+        saveButton = findViewById(R.id.save)
+
+        enterBar = findViewById(R.id.enter_bar)
+        inputBar = findViewById(R.id.input_bar)
+
+        debtLabelAnchor = enterBar.getChildAt(4)
+        debtInputAnchor = findViewById(R.id.m_i_credit)
+
+        creditLabelAnchor = enterBar.getChildAt(6)
+        creditInputAnchor = findViewById(R.id.m_i_spent)
+
+        val firstDebt = InputPair(
+            findViewById(R.id.m_i_debt),
+            findViewById(R.id.m_i_debt_n)
+        )
+
+        val firstCredit = InputPair(
+            findViewById(R.id.m_i_credit),
+            findViewById(R.id.m_i_credit_n)
+        )
+
+        debtInputs.add(firstDebt)
+        creditInputs.add(firstCredit)
+
+        // DATE PICKER
+
+        findViewById<Button>(R.id.m_b_date).setOnClickListener {
+            dateInput.setText(
+                java.text.SimpleDateFormat(
+                    "dd / MM / yyyy (EEEE)",
+                    Locale.ENGLISH
+                ).format(java.util.Date())
+            )
+        }
+
+        dateInput.setOnClickListener {
+            val calendar = Calendar.getInstance()
+
+            DatePickerDialog(
+                this,
+                { _, year, month, day ->
+
+                    val selected = Calendar.getInstance().apply {
+                        set(year, month, day)
+                    }
+
+                    dateInput.setText(
+                        String.format(
+                            Locale.US,
+                            "%02d / %02d / %04d (%s)",
+                            day,
+                            month + 1,
+                            year,
+                            selected.getDisplayName(
+                                Calendar.DAY_OF_WEEK,
+                                Calendar.LONG,
+                                Locale.US
+                            )
+                        )
+                    )
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        // NUMBER INPUT FORMATTING
+
+        formatNumberInput(allowanceInput)
+        formatNumberInput(spentInput)
+
+        debtInputs.forEach {
+            formatNumberInput(it.amount)
+            capitalizeWords(it.name)
+        }
+
+        creditInputs.forEach {
+            formatNumberInput(it.amount)
+            capitalizeWords(it.name)
+        }
+
+        // DYNAMIC DEBT INPUT
+
+        findViewById<Button>(R.id.m_b_debt).setOnClickListener {
+
+            val latest = debtInputs.last()
+
+            if (
+                latest.amount.text.isBlank() ||
+                latest.name.text.isBlank()
+            ) return@setOnClickListener
+
+            val newEntry = addDynamicEntry(
+                enterBar,
+                inputBar,
+                debtLabelAnchor,
+                debtInputAnchor,
+                R.string.m_lb_debt,
+                R.string.m_lb_debt_n,
+                R.string.m_i_debt,
+                R.string.m_i_debt_n,
+                Color.rgb(102, 102, 102)
+            )
+
+            formatNumberInput(newEntry.first)
+            capitalizeWords(newEntry.second)
+
+            debtInputs.add(
+                InputPair(newEntry.first, newEntry.second)
+            )
+
+            updateSaveButton()
+        }
+
+        // DYNAMIC CREDIT INPUT
+
+        findViewById<Button>(R.id.m_b_credit).setOnClickListener {
+
+            val latest = creditInputs.last()
+
+            if (
+                latest.amount.text.isBlank() ||
+                latest.name.text.isBlank()
+            ) return@setOnClickListener
+
+            val newEntry = addDynamicEntry(
+                enterBar,
+                inputBar,
+                creditLabelAnchor,
+                creditInputAnchor,
+                R.string.m_lb_credit,
+                R.string.m_lb_credit_n,
+                R.string.m_i_credit,
+                R.string.m_i_credit_n,
+                Color.rgb(102, 102, 102)
+            )
+
+            formatNumberInput(newEntry.first)
+            capitalizeWords(newEntry.second)
+
+            creditInputs.add(
+                InputPair(newEntry.first, newEntry.second)
+            )
+
+            updateSaveButton()
+        }
+
+        // SAVE BUTTON
+
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                updateSaveButton()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        dateInput.addTextChangedListener(watcher)
+        allowanceInput.addTextChangedListener(watcher)
+        spentInput.addTextChangedListener(watcher)
+
+        debtInputs.forEach {
+            it.amount.addTextChangedListener(watcher)
+            it.name.addTextChangedListener(watcher)
+        }
+
+        creditInputs.forEach {
+            it.amount.addTextChangedListener(watcher)
+            it.name.addTextChangedListener(watcher)
+        }
+
+        saveButton.setOnClickListener {
+            saveEntries()
+        }
+
+        // NAVIGATION
+
         findViewById<TextView>(R.id.ab_status).setOnClickListener {
             startActivity(Intent(this, Status::class.java))
         }
@@ -190,12 +280,144 @@ class Money : AppCompatActivity() {
             startActivity(Intent(this, Notes::class.java))
         }
 
-        findViewById<TextView>(R.id.ab_history).setOnClickListener {
+        findViewById<Button>(R.id.ab_history).setOnClickListener {
             startActivity(Intent(this, History::class.java))
         }
+
+        updateSaveButton()
     }
 
-    // DYNAMIC ENTRY - Create
+    // VALIDATION
+
+    private fun hasValidInput(): Boolean {
+
+        val hasAllowance = allowanceInput.text.isNotBlank()
+        val hasSpent = spentInput.text.isNotBlank()
+
+        val hasDebt = debtInputs.any {
+            it.amount.text.isNotBlank()
+        }
+
+        val hasCredit = creditInputs.any {
+            it.amount.text.isNotBlank()
+        }
+
+        val hasAnyInput =
+            hasAllowance || hasSpent || hasDebt || hasCredit
+
+        if (!hasAnyInput) return false
+
+        if (dateInput.text.isBlank()) return false
+
+        for (entry in debtInputs) {
+            if (
+                entry.amount.text.isNotBlank() &&
+                entry.name.text.isBlank()
+            ) return false
+        }
+
+        for (entry in creditInputs) {
+            if (
+                entry.amount.text.isNotBlank() &&
+                entry.name.text.isBlank()
+            ) return false
+        }
+
+        return true
+    }
+
+    private fun updateSaveButton() {
+        val valid = hasValidInput()
+
+        saveButton.setBackgroundTintList(
+            android.content.res.ColorStateList.valueOf(
+                if (valid) Color.rgb(211, 154, 0)
+                else Color.rgb(102, 102, 102)
+            )
+        )
+
+        saveButton.setTypeface(
+            null,
+            if (valid) android.graphics.Typeface.BOLD
+            else android.graphics.Typeface.NORMAL
+        )
+    }
+
+    // SAVE DATA
+
+    private fun saveEntries() {
+
+        if (!hasValidInput()) return
+
+        val date = dateInput.text.toString()
+
+        val allowance = MoneyData.parseAmount(
+            allowanceInput.text.toString()
+        )
+
+        val spent = MoneyData.parseAmount(
+            spentInput.text.toString()
+        )
+
+        MoneyData.addMoneyEntry(
+            this,
+            date,
+            allowance,
+            spent
+        )
+
+        val debts = debtInputs
+            .filter {
+                it.amount.text.isNotBlank() &&
+                        it.name.text.isNotBlank()
+            }
+            .map {
+                PersonEntry(
+                    name = it.name.text.toString().trim(),
+                    amount = MoneyData.parseAmount(
+                        it.amount.text.toString()
+                    ),
+                    date = date
+                )
+            }
+
+        val credits = creditInputs
+            .filter {
+                it.amount.text.isNotBlank() &&
+                        it.name.text.isNotBlank()
+            }
+            .map {
+                PersonEntry(
+                    name = it.name.text.toString().trim(),
+                    amount = MoneyData.parseAmount(
+                        it.amount.text.toString()
+                    ),
+                    date = date
+                )
+            }
+
+        MoneyData.addPeople(this, true, debts)
+        MoneyData.addPeople(this, false, credits)
+
+        dateInput.text.clear()
+        allowanceInput.text.clear()
+        spentInput.text.clear()
+
+        debtInputs.forEach {
+            it.amount.text.clear()
+            it.name.text.clear()
+        }
+
+        creditInputs.forEach {
+            it.amount.text.clear()
+            it.name.text.clear()
+        }
+
+        updateSaveButton()
+    }
+
+    // CREATE DYNAMIC INPUT
+
     private fun addDynamicEntry(
         labelContainer: LinearLayout,
         inputContainer: LinearLayout,
@@ -208,9 +430,9 @@ class Money : AppCompatActivity() {
         nameTextColor: Int
     ): Pair<EditText, EditText> {
 
-        val padding = (5 * resources.displayMetrics.density).toInt()
+        val padding =
+            (5 * resources.displayMetrics.density).toInt()
 
-        // AMOUNT LABEL - Layout, Styling
         val amountLabel = TextView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -223,7 +445,6 @@ class Money : AppCompatActivity() {
             setPadding(padding, padding, padding, padding)
         }
 
-        // NAME LABEL - Layout, Styling
         val nameLabel = TextView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -236,7 +457,6 @@ class Money : AppCompatActivity() {
             setPadding(padding, padding, padding, padding)
         }
 
-        // AMOUNT INPUT - Layout, Styling
         val amountInput = EditText(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -249,11 +469,12 @@ class Money : AppCompatActivity() {
             textSize = 15f
             setPadding(padding, padding, padding, padding)
             background = null
-            inputType = InputType.TYPE_CLASS_NUMBER or
-                    InputType.TYPE_NUMBER_FLAG_DECIMAL
+
+            inputType =
+                InputType.TYPE_CLASS_NUMBER or
+                        InputType.TYPE_NUMBER_FLAG_DECIMAL
         }
 
-        // NAME INPUT - Layout, Styling
         val nameInput = EditText(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -266,10 +487,12 @@ class Money : AppCompatActivity() {
             textSize = 15f
             setPadding(padding, padding, padding, padding)
             background = null
-            inputType = InputType.TYPE_CLASS_TEXT
+
+            inputType =
+                InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_FLAG_CAP_WORDS
         }
 
-        // INSERT LABELS - Position
         labelContainer.addView(
             amountLabel,
             labelContainer.indexOfChild(labelAnchor)
@@ -280,7 +503,6 @@ class Money : AppCompatActivity() {
             labelContainer.indexOfChild(labelAnchor)
         )
 
-        // INSERT INPUTS - Position
         inputContainer.addView(
             amountInput,
             inputContainer.indexOfChild(inputAnchor)
@@ -291,10 +513,43 @@ class Money : AppCompatActivity() {
             inputContainer.indexOfChild(inputAnchor)
         )
 
+        val watcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                updateSaveButton()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        amountInput.addTextChangedListener(watcher)
+        nameInput.addTextChangedListener(watcher)
+
         return Pair(amountInput, nameInput)
     }
 
-    // NUMBER FORMATTING - Interact
+    // CAPITALIZE WORDS
+
+    private fun capitalizeWords(editText: EditText) {
+        editText.inputType =
+            InputType.TYPE_CLASS_TEXT or
+                    InputType.TYPE_TEXT_FLAG_CAP_WORDS
+    }
+
+    // NUMBER FORMATTING
+
     private fun formatNumberInput(editText: EditText) {
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -334,12 +589,6 @@ class Money : AppCompatActivity() {
                     return
                 }
 
-                // REMOVE LEADING ZEROS
-                val normalized = clean.replace(
-                    Regex("^0+(?=\\d)"),
-                    ""
-                )
-
                 if (clean.startsWith(".")) {
                     editText.removeTextChangedListener(this)
                     editText.setText("0$clean")
@@ -348,12 +597,14 @@ class Money : AppCompatActivity() {
                     return
                 }
 
-                val parts = normalized.split(".", limit = 2)
+                val parts = clean.split(".", limit = 2)
 
                 val integerPart = parts[0]
-                val decimalPart = if (parts.size > 1) parts[1] else null
+                val decimalPart =
+                    if (parts.size > 1) parts[1] else null
 
-                val formattedInteger = integerPart.reversed()
+                val formattedInteger = integerPart
+                    .reversed()
                     .chunked(3)
                     .joinToString(" ") { it.reversed() }
                     .reversed()
@@ -362,16 +613,16 @@ class Money : AppCompatActivity() {
                     ?.chunked(3)
                     ?.joinToString(" ")
 
-                val formatted = if (decimalPart != null) {
-                    "$formattedInteger.$formattedDecimal"
-                } else {
-                    formattedInteger
-                }
+                val formatted =
+                    if (decimalPart != null) {
+                        "$formattedInteger.$formattedDecimal"
+                    } else {
+                        formattedInteger
+                    }
 
                 if (original != formatted) {
 
                     editText.removeTextChangedListener(this)
-
                     editText.setText(formatted)
 
                     var newCursor = 0
