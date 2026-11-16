@@ -111,28 +111,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+
+            <TextView
+                android:text="@string/s_d_leftover"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
             <TextView
                 android:text="@string/s_d_spent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="start"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:padding="5dp"/>
-
-            <TextView
-                android:text="@string/s_d_debt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="start"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:padding="5dp"/>
-
-            <TextView
-                android:text="@string/s_d_credit"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -143,6 +136,7 @@
 
             <TextView
                 android:text="@string/s_d_allowance"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -152,7 +146,8 @@
                 android:padding="5dp"/>
 
             <TextView
-                android:text="@string/s_d_leftover"
+                android:text="@string/s_d_debt"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -161,6 +156,16 @@
                 android:textSize="15sp"
                 android:padding="5dp"/>
 
+            <TextView
+                android:text="@string/s_d_credit"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
         </LinearLayout>
 
         <!-- RIGHT COLUMN -->
@@ -171,8 +176,30 @@
             android:orientation="vertical">
 
             <TextView
+                android:text="@string/s_s_leftover"
+                android:id="@+id/s_s_leftover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
                 android:id="@+id/s_s_spent"
                 android:text="@string/s_s_spent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="end"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:text="@string/s_s_allowance"
+                android:id="@+id/s_s_allowance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -202,29 +229,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:padding="5dp"/>
-
-            <TextView
-                android:text="@string/s_s_allowance"
-                android:id="@+id/s_s_allowance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="end"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:padding="5dp"/>
-
-            <TextView
-                android:text="@string/s_s_leftover"
-                android:id="@+id/s_s_leftover"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="end"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:padding="5dp"/>
-
         </LinearLayout>
 
     </LinearLayout>

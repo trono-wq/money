@@ -8,6 +8,7 @@
     <string name="ab_separator">    •</string>
 
     <string name="b_save">          Save</string>
+    <string name="b_clear_all">     Clear All</string>
 
     <string name="b_ab_history">    Full History</string>
     <string name="b_ab_week">       Week</string>
@@ -88,19 +89,21 @@
     <string name="m_b_debt">        +</string>
     <string name="m_b_credit">      +</string>
 
+    <string name="m_b_r_credit">    -</string>
+
     <string name="n_input">         Notes</string>
 
     <string name="s_lb_spent">      Total spent:</string>
     <string name="s_lb_debt">       Debt:</string>
     <string name="s_lb_credit">     Credit:</string>
     <string name="s_lb_allowance">  Total allowance:</string>
-    <string name="s_lb_leftover">   Leftover:</string>
+    <string name="s_lb_leftover">   Money:</string>
 
     <string name="s_d_spent">       Total spent</string>
     <string name="s_d_debt">        Debt</string>
     <string name="s_d_credit">      Credit</string>
     <string name="s_d_allowance">   Total allowance</string>
-    <string name="s_d_leftover">    Leftover</string>
+    <string name="s_d_leftover">    Money</string>
 
     <string name="s_s_spent">       —</string>
     <string name="s_s_debt">        —</string>
