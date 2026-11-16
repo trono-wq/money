@@ -15,32 +15,6 @@
     <string name="b_ab_credit">     Credit</string>
     <string name="b_ab_debt">       Debt</string>
 
-    <string name="m_lb_date">       Enter date:ㅤㅤㅤㅤ</string>
-    <string name="m_lb_allowance">  Enter allowance:ㅤㅤㅤㅤ</string>
-    <string name="m_lb_debt">       Enter debt:ㅤㅤㅤㅤ</string>
-    <string name="m_lb_debt_n">     ㅤㅤㅤㅤEnter name:</string>
-    <string name="m_lb_credit">     Enter credit:ㅤㅤㅤㅤ</string>
-    <string name="m_lb_credit_n">   ㅤㅤㅤㅤEnter name:</string>
-    <string name="m_lb_spent">      Enter money spent:ㅤㅤㅤㅤ</string>
-
-    <string name="m_i_date">        MM / DD / YYYY (Day)ㅤㅤㅤㅤ</string>
-    <string name="m_i_allowance">   -ㅤㅤㅤㅤ</string>
-    <string name="m_i_debt">        -ㅤㅤㅤㅤ</string>
-    <string name="m_i_debt_n">      -ㅤㅤㅤㅤ</string>
-    <string name="m_i_credit">      -ㅤㅤㅤㅤ</string>
-    <string name="m_i_credit_n">    -ㅤㅤㅤㅤ</string>
-    <string name="m_i_spent">       -ㅤㅤㅤㅤ</string>
-
-    <string name="m_b_date">        T</string>
-    <string name="m_b_debt">        +</string>
-    <string name="m_b_credit">      +</string>
-
-    <string name="s_lb_spent">      Total spent:</string>
-    <string name="s_lb_debt">       Debt:</string>
-    <string name="s_lb_credit">     Credit:</string>
-    <string name="s_lb_allowance">  Total allowance:</string>
-    <string name="s_lb_leftover">   Leftover:</string>
-
     <string name="c_hint">          0</string>
     <string name="c_h">             H</string>
     <string name="c_c">             C</string>
@@ -63,6 +37,54 @@
     <string name="c_add">           +</string>
     <string name="c_equal">         =</string>
 
+    <string name ="cr_d_total">     Totalㅤㅤ</string>
+    <string name ="cr_d_name">      noneㅤㅤ</string>
+    <string name ="cr_d_date">      ㅤㅤnone</string>
+
+    <string name ="cr_s_total">     —ㅤㅤ</string>
+    <string name ="cr_s_name">      noneㅤㅤ</string>
+    <string name ="cr_s_date">      noneㅤㅤ</string>
+
+    <string name ="cr_b_name">      v</string>
+
+    <string name ="d_d_total">      Totalㅤㅤ</string>
+    <string name ="d_d_name">       noneㅤㅤ</string>
+    <string name ="d_d_date">       ㅤㅤnone</string>
+
+    <string name ="d_s_total">      —ㅤㅤ</string>
+    <string name ="d_s_name">       noneㅤㅤ</string>
+    <string name ="d_s_date">       noneㅤㅤ</string>
+
+    <string name ="d_b_name">       v</string>
+
+    <string name="m_lb_date">       Enter date:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_allowance">  Enter allowance:ㅤㅤㅤ</string>
+    <string name="m_lb_debt">       Enter debt:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_debt_n">     ㅤㅤㅤㅤEnter name:</string>
+    <string name="m_lb_credit">     Enter credit:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_credit_n">   ㅤㅤㅤㅤEnter name:</string>
+    <string name="m_lb_spent">      Enter money spent:ㅤㅤㅤㅤ</string>
+
+    <string name="m_i_date">        MM / DD / YYYY (Day)ㅤㅤㅤㅤ</string>
+    <string name="m_i_allowance">   —ㅤㅤㅤㅤ</string>
+    <string name="m_i_debt">        —ㅤㅤㅤㅤ</string>
+    <string name="m_i_debt_n">      —ㅤㅤㅤㅤ</string>
+    <string name="m_i_credit">      —ㅤㅤㅤㅤ</string>
+    <string name="m_i_credit_n">    —ㅤㅤㅤㅤ</string>
+    <string name="m_i_spent">       —ㅤㅤㅤㅤ</string>
+
+    <string name="m_b_date">        T</string>
+    <string name="m_b_debt">        +</string>
+    <string name="m_b_credit">      +</string>
+
+    <string name="n_input">         Notes</string>
+
+    <string name="s_lb_spent">      Total spent:</string>
+    <string name="s_lb_debt">       Debt:</string>
+    <string name="s_lb_credit">     Credit:</string>
+    <string name="s_lb_allowance">  Total allowance:</string>
+    <string name="s_lb_leftover">   Leftover:</string>
+
     <string name="s_d_spent">       Total spent</string>
     <string name="s_d_debt">        Debt</string>
     <string name="s_d_credit">      Credit</string>
@@ -74,6 +96,4 @@
     <string name="s_s_credit">      —</string>
     <string name="s_s_allowance">   —</string>
     <string name="s_s_leftover">    —</string>
-
-    <string name="n_input">         Notes</string>
 </resources>
