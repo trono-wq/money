@@ -37,25 +37,36 @@
     <string name="c_add">           +</string>
     <string name="c_equal">         =</string>
 
-    <string name ="cr_d_total">     Totalㅤㅤ</string>
-    <string name ="cr_d_name">      noneㅤㅤ</string>
-    <string name ="cr_d_date">      ㅤㅤnone</string>
+    <string name="cr_d_total">      Totalㅤㅤ</string>
+    <string name="cr_d_name">       noneㅤㅤ</string>
+    <string name="cr_d_date">       ㅤㅤnone</string>
 
-    <string name ="cr_s_total">     —ㅤㅤ</string>
-    <string name ="cr_s_name">      noneㅤㅤ</string>
-    <string name ="cr_s_date">      noneㅤㅤ</string>
+    <string name="cr_s_total">      —ㅤㅤ</string>
+    <string name="cr_s_name">       noneㅤㅤ</string>
+    <string name="cr_s_date">       noneㅤㅤ</string>
 
-    <string name ="cr_b_name">      v</string>
+    <string name="cr_s_b_total">    C</string>
+    <string name="cr_s_b_name">     C</string>
+    <string name="cr_s_b_date">     C</string>
 
-    <string name ="d_d_total">      Totalㅤㅤ</string>
-    <string name ="d_d_name">       noneㅤㅤ</string>
-    <string name ="d_d_date">       ㅤㅤnone</string>
+    <string name="cr_b_edit">       Edit</string>
 
-    <string name ="d_s_total">      —ㅤㅤ</string>
-    <string name ="d_s_name">       noneㅤㅤ</string>
-    <string name ="d_s_date">       noneㅤㅤ</string>
+    <string name="cr_b_name">       v</string>
 
-    <string name ="d_b_name">       v</string>
+    <string name="d_d_total">       Totalㅤㅤ</string>
+    <string name="d_d_name">        noneㅤㅤ</string>
+    <string name="d_d_date">        ㅤㅤnone</string>
+
+    <string name="d_s_total">       —ㅤㅤ</string>
+    <string name="d_s_name">        noneㅤㅤ</string>
+    <string name="d_s_date">        noneㅤㅤ</string>
+
+    <string name="d_s_b_total">     C</string>
+    <string name="d_s_b_name">      C</string>
+    <string name="d_s_b_date">      C</string>
+
+    <string name="d_b_edit">        Edit</string>
+    <string name="d_b_name">        v</string>
 
     <string name="m_lb_date">       Enter date:ㅤㅤㅤㅤ</string>
     <string name="m_lb_allowance">  Enter allowance:ㅤㅤㅤ</string>
