@@ -24,7 +24,9 @@ class Money : AppCompatActivity() {
 
     private data class InputPair(
         val amount: EditText,
-        val name: EditText
+        val name: EditText,
+        val amountLabel: TextView? = null,
+        val nameLabel: TextView? = null
     )
 
     private val debtInputs = mutableListOf<InputPair>()
@@ -189,12 +191,12 @@ class Money : AppCompatActivity() {
                 Color.rgb(102, 102, 102)
             )
 
-            formatNumberInput(newEntry.first)
-            capitalizeWords(newEntry.second)
+            formatNumberInput(newEntry.amount)
+            capitalizeWords(newEntry.name)
 
-            debtInputs.add(
-                InputPair(newEntry.first, newEntry.second)
-            )
+            debtInputs.add(newEntry)
+
+            watchForEmptyEntry(newEntry, debtInputs)
 
             updateSaveButton()
         }
@@ -222,12 +224,12 @@ class Money : AppCompatActivity() {
                 Color.rgb(102, 102, 102)
             )
 
-            formatNumberInput(newEntry.first)
-            capitalizeWords(newEntry.second)
+            formatNumberInput(newEntry.amount)
+            capitalizeWords(newEntry.name)
 
-            creditInputs.add(
-                InputPair(newEntry.first, newEntry.second)
-            )
+            creditInputs.add(newEntry)
+
+            watchForEmptyEntry(newEntry, creditInputs)
 
             updateSaveButton()
         }
@@ -235,6 +237,7 @@ class Money : AppCompatActivity() {
         // SAVE BUTTON
 
         val watcher = object : TextWatcher {
+
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -333,6 +336,7 @@ class Money : AppCompatActivity() {
     }
 
     private fun updateSaveButton() {
+
         val valid = hasValidInput()
 
         saveButton.setBackgroundTintList(
@@ -349,8 +353,7 @@ class Money : AppCompatActivity() {
         )
     }
 
-
-// SAVE DATA
+    // SAVE DATA
 
     private fun saveEntries() {
 
@@ -407,6 +410,11 @@ class Money : AppCompatActivity() {
             credits
         )
 
+        // REMOVE EXTRA DEBT / CREDIT ROWS
+
+        removeExtraEntries(debtInputs, enterBar, inputBar)
+        removeExtraEntries(creditInputs, enterBar, inputBar)
+
         // CLEAR INPUTS
 
         dateInput.text.clear()
@@ -426,6 +434,113 @@ class Money : AppCompatActivity() {
         updateSaveButton()
     }
 
+    // REMOVE EXTRA INPUT GROUPS
+
+    private fun removeExtraEntries(
+        entries: MutableList<InputPair>,
+        labelContainer: LinearLayout,
+        inputContainer: LinearLayout
+    ) {
+
+        for (i in entries.lastIndex downTo 1) {
+
+            val entry = entries[i]
+
+            entry.amountLabel?.let {
+                labelContainer.removeView(it)
+            }
+
+            entry.nameLabel?.let {
+                labelContainer.removeView(it)
+            }
+
+            inputContainer.removeView(entry.amount)
+            inputContainer.removeView(entry.name)
+
+            entries.removeAt(i)
+        }
+    }
+
+    // AUTOMATICALLY COLLAPSE EMPTY GROUPS
+
+    private fun watchForEmptyEntry(
+        entry: InputPair,
+        entries: MutableList<InputPair>
+    ) {
+
+        val watcher = object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {}
+
+            override fun afterTextChanged(s: Editable?) {
+
+                if (
+                    entry.amount.text.isBlank() &&
+                    entry.name.text.isBlank()
+                ) {
+                    removeEmptyEntry(
+                        entry,
+                        entries,
+                        enterBar,
+                        inputBar
+                    )
+                }
+            }
+        }
+
+        entry.amount.addTextChangedListener(watcher)
+        entry.name.addTextChangedListener(watcher)
+    }
+
+    // REMOVE ONE EMPTY GROUP
+
+    private fun removeEmptyEntry(
+        entry: InputPair,
+        entries: MutableList<InputPair>,
+        labelContainer: LinearLayout,
+        inputContainer: LinearLayout
+    ) {
+
+        val index = entries.indexOf(entry)
+
+        // NEVER REMOVE THE FIRST PERMANENT GROUP
+
+        if (index <= 0) return
+
+        // REMOVE BOTH LABELS
+
+        entry.amountLabel?.let {
+            labelContainer.removeView(it)
+        }
+
+        entry.nameLabel?.let {
+            labelContainer.removeView(it)
+        }
+
+        // REMOVE BOTH INPUTS
+
+        inputContainer.removeView(entry.amount)
+        inputContainer.removeView(entry.name)
+
+        // REMOVE FROM TRACKED INPUTS
+
+        entries.removeAt(index)
+
+        updateSaveButton()
+    }
+
     // CREATE DYNAMIC INPUT
 
     private fun addDynamicEntry(
@@ -438,12 +553,13 @@ class Money : AppCompatActivity() {
         amountHintRes: Int,
         nameHintRes: Int,
         nameTextColor: Int
-    ): Pair<EditText, EditText> {
+    ): InputPair {
 
         val padding =
             (5 * resources.displayMetrics.density).toInt()
 
         val amountLabel = TextView(this).apply {
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -456,6 +572,7 @@ class Money : AppCompatActivity() {
         }
 
         val nameLabel = TextView(this).apply {
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -468,6 +585,7 @@ class Money : AppCompatActivity() {
         }
 
         val amountInput = EditText(this).apply {
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -486,6 +604,7 @@ class Money : AppCompatActivity() {
         }
 
         val nameInput = EditText(this).apply {
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -503,6 +622,8 @@ class Money : AppCompatActivity() {
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS
         }
 
+        // INSERT LABELS
+
         labelContainer.addView(
             amountLabel,
             labelContainer.indexOfChild(labelAnchor)
@@ -513,6 +634,8 @@ class Money : AppCompatActivity() {
             labelContainer.indexOfChild(labelAnchor)
         )
 
+        // INSERT INPUTS
+
         inputContainer.addView(
             amountInput,
             inputContainer.indexOfChild(inputAnchor)
@@ -522,6 +645,8 @@ class Money : AppCompatActivity() {
             nameInput,
             inputContainer.indexOfChild(inputAnchor)
         )
+
+        // SAVE BUTTON WATCHER
 
         val watcher = object : TextWatcher {
 
@@ -547,7 +672,12 @@ class Money : AppCompatActivity() {
         amountInput.addTextChangedListener(watcher)
         nameInput.addTextChangedListener(watcher)
 
-        return Pair(amountInput, nameInput)
+        return InputPair(
+            amountInput,
+            nameInput,
+            amountLabel,
+            nameLabel
+        )
     }
 
     // CAPITALIZE WORDS
