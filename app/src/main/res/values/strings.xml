@@ -73,7 +73,7 @@
     <string name="m_lb_allowance">  Enter allowance:ㅤㅤㅤ</string>
     <string name="m_lb_debt">       Enter debt:ㅤㅤㅤㅤ</string>
     <string name="m_lb_debt_n">     ㅤㅤㅤㅤEnter name:</string>
-    <string name="m_lb_credit">     Enter credit:ㅤㅤㅤㅤ</string>
+    <string name="m_lb_credit">     Enter credit:ㅤㅤ</string>
     <string name="m_lb_credit_n">   ㅤㅤㅤㅤEnter name:</string>
     <string name="m_lb_spent">      Enter money spent:ㅤㅤㅤㅤ</string>
 
