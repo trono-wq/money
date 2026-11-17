@@ -1,9 +1,14 @@
+
 package com.example.money
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -13,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ViewCompat
+import java.util.Locale
 
 abstract class PeopleActivity : AppCompatActivity() {
 
@@ -30,14 +36,24 @@ abstract class PeopleActivity : AppCompatActivity() {
 
     private val expanded = mutableSetOf<String>()
 
-    private val nameFields = mutableMapOf<String, EditText>()
+    // ORIGINAL AMOUNTS DURING EDITING
+    private val draftAmounts = mutableMapOf<String, String>()
 
-    private val dateFields =
-        mutableMapOf<String, Pair<EditText, EditText>>()
+    // DISPLAYED TOTALS
+    private val personTotalViews = mutableMapOf<String, TextView>()
+    private lateinit var grandTotalView: TextView
 
+    // BUTTON COLORS
     private val white = Color.WHITE
     private val gray = Color.rgb(102, 102, 102)
     private val gold = Color.rgb(211, 154, 0)
+
+    // ROW DIMENSIONS
+    private val rowHeight = 40
+    private val clearButtonWidth = 25
+
+    // SAVE STATE
+    private var canSave = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,11 +97,34 @@ abstract class PeopleActivity : AppCompatActivity() {
             }
 
         editButton.setOnClickListener {
-            if (editing) {
-                saveChanges()
-            } else {
+
+            if (!editing) {
+
+                // ENTER EDIT MODE
+
                 editing = true
+
+                draftAmounts.clear()
+
+                entries.forEach { entry ->
+                    draftAmounts[entry.id] =
+                        MoneyData.formatAmount(entry.amount)
+                }
+
                 renderEntries()
+
+            } else {
+
+                if (canSave) {
+
+                    // SAVE VALID CHANGES
+                    saveChanges()
+
+                } else {
+
+                    // GRAY SAVE: EXIT WITHOUT SAVING
+                    cancelEditing()
+                }
             }
         }
 
@@ -96,12 +135,99 @@ abstract class PeopleActivity : AppCompatActivity() {
 
     private fun groupedEntries(): Map<String, List<PersonEntry>> {
         return entries.groupBy {
-            it.name.trim().lowercase()
+            it.name.trim().lowercase(Locale.ROOT)
         }
     }
 
     private fun displayName(group: List<PersonEntry>): String {
         return group.firstOrNull()?.name ?: ""
+    }
+
+    // AMOUNT HELPERS
+
+    private fun parseEditableAmount(value: String): Double? {
+        return value
+            .replace(",", "")
+            .replace(" ", "")
+            .toDoubleOrNull()
+    }
+
+    private fun currentAmount(entry: PersonEntry): Double {
+        if (!editing) return entry.amount
+
+        return parseEditableAmount(
+            draftAmounts[entry.id] ?: ""
+        ) ?: entry.amount
+    }
+
+    // SAVE BUTTON STATE
+
+    private fun updateSaveButton() {
+
+        if (!editing) {
+            canSave = false
+
+            editButton.text = "Edit"
+            editButton.isEnabled = true
+            editButton.backgroundTintList =
+                ColorStateList.valueOf(gray)
+
+            return
+        }
+
+        var valid = true
+        var changed = false
+
+        entries.forEach { entry ->
+
+            val amount = parseEditableAmount(
+                draftAmounts[entry.id] ?: ""
+            )
+
+            if (
+                amount == null ||
+                amount < 0.0 ||
+                amount > entry.amount
+            ) {
+                valid = false
+            } else if (amount != entry.amount) {
+                changed = true
+            }
+        }
+
+        canSave = valid && changed
+
+        editButton.text = "Save"
+        editButton.isEnabled = true
+
+        editButton.backgroundTintList =
+            ColorStateList.valueOf(
+                if (canSave) gold else gray
+            )
+    }
+
+    // UPDATE DISPLAYED TOTALS
+
+    private fun updateDisplayedTotals() {
+
+        if (!editing) return
+
+        val total = entries.sumOf {
+            currentAmount(it)
+        }
+
+        grandTotalView.text =
+            MoneyData.formatAmount(total)
+
+        groupedEntries().forEach { (key, group) ->
+
+            val personTotal = group.sumOf {
+                currentAmount(it)
+            }
+
+            personTotalViews[key]?.text =
+                MoneyData.formatAmount(personTotal)
+        }
     }
 
     // RENDER
@@ -111,29 +237,32 @@ abstract class PeopleActivity : AppCompatActivity() {
         enterBar.removeAllViews()
         inputBar.removeAllViews()
 
-        nameFields.clear()
-        dateFields.clear()
+        personTotalViews.clear()
 
-        editButton.text = if (editing) "Save" else "Edit"
-
-        editButton.setBackgroundTintList(
-            android.content.res.ColorStateList.valueOf(gray)
-        )
+        updateSaveButton()
 
         // TOTAL
 
-        val total = entries.sumOf { it.amount }
+        val total = entries.sumOf {
+            currentAmount(it)
+        }
 
         addLeftText("TOTAL", bold = true)
-        addRightValue(
+
+        grandTotalView = addRightValue(
             MoneyData.formatAmount(total),
             bold = true,
             clearAction = if (editing) {
                 {
-                    entries.clear()
+                    entries.forEach { entry ->
+                        draftAmounts[entry.id] = "0"
+                    }
+
                     renderEntries()
                 }
-            } else null
+            } else {
+                null
+            }
         )
 
         // PEOPLE
@@ -143,12 +272,16 @@ abstract class PeopleActivity : AppCompatActivity() {
         groups.forEach { (key, group) ->
 
             val name = displayName(group)
-            val personTotal = group.sumOf { it.amount }
+
+            val personTotal = group.sumOf {
+                currentAmount(it)
+            }
 
             addPersonHeader(
                 key,
                 name,
-                personTotal
+                personTotal,
+                group
             )
 
             if (key in expanded) {
@@ -158,6 +291,8 @@ abstract class PeopleActivity : AppCompatActivity() {
                 }
             }
         }
+
+        updateSaveButton()
     }
 
     // LEFT TEXT ROW
@@ -167,12 +302,14 @@ abstract class PeopleActivity : AppCompatActivity() {
         bold: Boolean = false,
         color: Int = white
     ) {
+
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
+
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                dp(rowHeight)
             )
         }
 
@@ -180,15 +317,26 @@ abstract class PeopleActivity : AppCompatActivity() {
             this.text = value
             setTextColor(color)
             textSize = 15f
-            setPadding(dp(5), dp(5), dp(5), dp(5))
+
+            gravity = Gravity.CENTER_VERTICAL
+
+            setPadding(
+                dp(5),
+                0,
+                dp(5),
+                0
+            )
 
             if (bold) {
-                setTypeface(null, android.graphics.Typeface.BOLD)
+                setTypeface(
+                    null,
+                    android.graphics.Typeface.BOLD
+                )
             }
 
             layoutParams = LinearLayout.LayoutParams(
                 0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 1f
             )
         }
@@ -202,35 +350,53 @@ abstract class PeopleActivity : AppCompatActivity() {
     private fun addRightValue(
         value: String,
         bold: Boolean = false,
+        textColor: Int = white,
         clearAction: (() -> Unit)? = null
-    ) {
+    ): TextView {
+
         val row = createRightRow()
 
         val text = TextView(this).apply {
             this.text = value
-            setTextColor(white)
-            textSize = 15f
+            setTextColor(textColor)
+            textSize = 16f
+
             gravity = Gravity.END or Gravity.CENTER_VERTICAL
-            setPadding(dp(5), dp(5), dp(5), dp(5))
+
+            setPadding(
+                dp(5),
+                0,
+                dp(5),
+                0
+            )
 
             if (bold) {
-                setTypeface(null, android.graphics.Typeface.BOLD)
+                setTypeface(
+                    null,
+                    android.graphics.Typeface.BOLD
+                )
             }
 
             layoutParams = LinearLayout.LayoutParams(
                 0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 1f
             )
         }
 
         row.addView(text)
 
+        // ALWAYS RESERVE CLEAR BUTTON SPACE
+
         if (clearAction != null) {
             row.addView(createClearButton(clearAction))
+        } else {
+            row.addView(createClearButtonSpace())
         }
 
         inputBar.addView(row)
+
+        return text
     }
 
     // PERSON HEADER
@@ -238,7 +404,8 @@ abstract class PeopleActivity : AppCompatActivity() {
     private fun addPersonHeader(
         key: String,
         name: String,
-        total: Double
+        total: Double,
+        group: List<PersonEntry>
     ) {
 
         // LEFT SIDE
@@ -246,52 +413,48 @@ abstract class PeopleActivity : AppCompatActivity() {
         val leftRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
+
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                dp(rowHeight)
             )
         }
 
-        if (editing) {
+        // NAME IS ALWAYS READ-ONLY
 
-            val nameInput = createEditText(name, false)
+        val nameText = TextView(this).apply {
+            text = name
+            setTextColor(white)
+            textSize = 15f
 
-            nameFields[key] = nameInput
+            gravity = Gravity.CENTER_VERTICAL
 
-            leftRow.addView(
-                nameInput,
-                LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
+            setPadding(
+                dp(5),
+                0,
+                dp(5),
+                0
             )
 
-        } else {
-
-            val nameText = TextView(this).apply {
-                text = name
-                setTextColor(white)
-                textSize = 15f
-                setPadding(dp(5), dp(5), dp(5), dp(5))
-
-                layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
-            }
-
-            leftRow.addView(nameText)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                1f
+            )
         }
+
+        leftRow.addView(nameText)
+
+        // EXPAND / COLLAPSE BUTTON
 
         val arrow = Button(this).apply {
             text = if (key in expanded) "^" else "v"
             textSize = 10f
             setTextColor(white)
             setPadding(0, 0, 0, 0)
+
             backgroundTintList =
-                android.content.res.ColorStateList.valueOf(gray)
+                ColorStateList.valueOf(gray)
 
             layoutParams = LinearLayout.LayoutParams(
                 dp(25),
@@ -299,6 +462,7 @@ abstract class PeopleActivity : AppCompatActivity() {
             )
 
             setOnClickListener {
+
                 if (key in expanded) {
                     expanded.remove(key)
                 } else {
@@ -320,29 +484,44 @@ abstract class PeopleActivity : AppCompatActivity() {
             text = MoneyData.formatAmount(total)
             setTextColor(white)
             textSize = 15f
+
             gravity = Gravity.END or Gravity.CENTER_VERTICAL
-            setPadding(dp(5), dp(5), dp(5), dp(5))
+
+            setPadding(
+                dp(5),
+                0,
+                dp(5),
+                0
+            )
 
             layoutParams = LinearLayout.LayoutParams(
                 0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 1f
             )
         }
 
+        personTotalViews[key] = amountText
+
         rightRow.addView(amountText)
 
+        // PERSON CLEAR BUTTON
+
         if (editing) {
+
             rightRow.addView(
                 createClearButton {
-                    entries.removeAll {
-                        it.name.trim().lowercase() == key
+                    group.forEach { entry ->
+                        draftAmounts[entry.id] = "0"
                     }
 
-                    expanded.remove(key)
                     renderEntries()
                 }
             )
+
+        } else {
+
+            rightRow.addView(createClearButtonSpace())
         }
 
         inputBar.addView(rightRow)
@@ -352,19 +531,52 @@ abstract class PeopleActivity : AppCompatActivity() {
 
     private fun addDateRow(entry: PersonEntry) {
 
-        // LEFT DATE
+        // LEFT DATE - ALWAYS READ-ONLY
+
+        addLeftText(
+            "    ${entry.date}",
+            color = gray
+        )
+
+        // RIGHT AMOUNT
 
         if (editing) {
 
-            val dateInput = createEditText(entry.date, false)
+            val amountInput = createAmountEditText(
+                draftAmounts[entry.id]
+                    ?: MoneyData.formatAmount(entry.amount)
+            )
 
-            enterBar.addView(dateInput)
+            amountInput.addTextChangedListener(
+                object : TextWatcher {
 
-            // RIGHT AMOUNT
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
 
-            val amountInput = createEditText(
-                MoneyData.formatAmount(entry.amount),
-                true
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+
+                        draftAmounts[entry.id] =
+                            s?.toString() ?: ""
+
+                        updateSaveButton()
+                        updateDisplayedTotals()
+                    }
+
+                    override fun afterTextChanged(
+                        s: Editable?
+                    ) {
+                    }
+                }
             )
 
             val rightRow = createRightRow()
@@ -373,94 +585,119 @@ abstract class PeopleActivity : AppCompatActivity() {
                 amountInput,
                 LinearLayout.LayoutParams(
                     0,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     1f
                 )
             )
 
+            // DATE CLEAR BUTTON
+
             rightRow.addView(
                 createClearButton {
-                    entries.removeAll { it.id == entry.id }
-                    renderEntries()
+                    amountInput.setText("0")
                 }
             )
 
             inputBar.addView(rightRow)
 
-            dateFields[entry.id] =
-                Pair(dateInput, amountInput)
-
         } else {
 
-            addLeftText(
-                "    ${entry.date}",
-                color = gray
-            )
-
             addRightValue(
-                MoneyData.formatAmount(entry.amount)
+                MoneyData.formatAmount(entry.amount),
+                textColor = gray
             )
         }
     }
 
-    // CREATE ROWS
+    // CREATE RIGHT ROW
 
     private fun createRightRow(): LinearLayout {
+
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
+
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                dp(rowHeight)
             )
         }
     }
+
+    // INVISIBLE CLEAR BUTTON SPACE
+
+    private fun createClearButtonSpace(): View {
+
+        return View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                dp(clearButtonWidth),
+                dp(30)
+            )
+
+            visibility = View.INVISIBLE
+        }
+    }
+
+    // CLEAR BUTTON
 
     private fun createClearButton(
         action: () -> Unit
     ): Button {
+
         return Button(this).apply {
             text = "C"
             textSize = 10f
             setTextColor(white)
             setPadding(0, 0, 0, 0)
+
             backgroundTintList =
-                android.content.res.ColorStateList.valueOf(gray)
+                ColorStateList.valueOf(gray)
 
             layoutParams = LinearLayout.LayoutParams(
-                dp(25),
+                dp(clearButtonWidth),
                 dp(30)
             )
 
             setOnClickListener {
                 action()
+                updateSaveButton()
+                updateDisplayedTotals()
             }
         }
     }
 
-    private fun createEditText(
-        value: String,
-        number: Boolean
+    // AMOUNT EDIT FIELD
+
+    private fun createAmountEditText(
+        value: String
     ): EditText {
+
         return EditText(this).apply {
             setText(value)
-            setTextColor(white)
+
+            setTextColor(gray)
             setHintTextColor(gray)
+
             textSize = 15f
-            setPadding(dp(5), dp(5), dp(5), dp(5))
+
+            setPadding(
+                dp(5),
+                0,
+                dp(5),
+                0
+            )
+
             background = null
 
-            inputType = if (number) {
+            inputType =
                 InputType.TYPE_CLASS_NUMBER or
                         InputType.TYPE_NUMBER_FLAG_DECIMAL
-            } else {
-                InputType.TYPE_CLASS_TEXT or
-                        InputType.TYPE_TEXT_FLAG_CAP_WORDS
-            }
+
+            gravity = Gravity.END or Gravity.CENTER_VERTICAL
 
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
     }
@@ -469,62 +706,81 @@ abstract class PeopleActivity : AppCompatActivity() {
 
     private fun saveChanges() {
 
+        if (!editing || !canSave) return
+
         val updated = mutableListOf<PersonEntry>()
 
-        val groups = groupedEntries()
+        // VALIDATE AND UPDATE EACH ORIGINAL ENTRY
 
-        groups.forEach { (key, group) ->
+        entries.forEach { entry ->
 
-            val newName = nameFields[key]
-                ?.text
-                ?.toString()
-                ?.trim()
-                ?: displayName(group)
+            val amountText =
+                draftAmounts[entry.id] ?: ""
 
-            if (newName.isBlank()) return@forEach
+            val newAmount =
+                parseEditableAmount(amountText)
 
-            group.forEach { entry ->
-
-                val fields = dateFields[entry.id]
-
-                val newDate = fields?.first
-                    ?.text
-                    ?.toString()
-                    ?.trim()
-                    ?: entry.date
-
-                val amountText = fields?.second
-                    ?.text
-                    ?.toString()
-                    ?: MoneyData.formatAmount(entry.amount)
-
-                val newAmount = MoneyData.parseAmount(amountText)
-
-                if (newDate.isNotBlank() && amountText.isNotBlank()) {
-                    updated.add(
-                        entry.copy(
-                            name = newName,
-                            date = newDate,
-                            amount = newAmount
-                        )
-                    )
-                }
+            if (
+                newAmount == null ||
+                newAmount < 0.0 ||
+                newAmount > entry.amount
+            ) {
+                updateSaveButton()
+                return
             }
+
+            updated.add(
+                entry.copy(
+                    amount = newAmount
+                )
+            )
         }
+
+        // REMOVE PEOPLE WHOSE COMBINED TOTAL IS ZERO.
+        // THIS HAPPENS ONLY AFTER SAVE.
+
+        val remaining = updated
+            .groupBy {
+                it.name.trim().lowercase(Locale.ROOT)
+            }
+            .values
+            .filter { group ->
+                group.sumOf { it.amount } > 0.0
+            }
+            .flatten()
+            .toMutableList()
+
+        // SAVE
 
         MoneyData.replacePeople(
             this,
             isDebt,
-            updated
+            remaining
         )
 
-        entries = updated
+        entries = remaining
+
         editing = false
+        draftAmounts.clear()
 
         renderEntries()
     }
 
+    // CANCEL EDITING
+
+    private fun cancelEditing() {
+
+        editing = false
+        draftAmounts.clear()
+
+        renderEntries()
+    }
+
+    // DP CONVERSION
+
     private fun dp(value: Int): Int {
-        return (value * resources.displayMetrics.density).toInt()
+        return (
+                value * resources.displayMetrics.density
+                ).toInt()
     }
 }

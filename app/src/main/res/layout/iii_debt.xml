@@ -138,8 +138,7 @@
                             android:padding="0dp"
                             android:text="@string/d_b_name"
                             android:textColor="#FFFFFF"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textSize="10sp"/>
                     </LinearLayout>
 
                     <TextView
