@@ -999,7 +999,13 @@ class Calculator : AppCompatActivity() {
             .setOnClickListener {
                 startActivity(Intent(this, Status::class.java))
             }
+
+        findViewById<TextView>(R.id.ab_flight)
+            .setOnClickListener {
+                startActivity(Intent(this, Status::class.java))
+            }
     }
+
 
     // NUMBER - Formatting
     private fun formatNumber(value: String): String {

@@ -141,6 +141,10 @@ class Notes : AppCompatActivity() {
         findViewById<TextView>(R.id.ab_calculator).setOnClickListener {
             startActivity(Intent(this, Calculator::class.java))
         }
+
+        findViewById<TextView>(R.id.ab_flight).setOnClickListener {
+            startActivity(Intent(this, Status::class.java))
+        }
     }
 
     // NUMBER FORMATTING

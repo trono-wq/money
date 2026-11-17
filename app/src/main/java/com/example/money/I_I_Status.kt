@@ -61,6 +61,10 @@ class Status : AppCompatActivity() {
         findViewById<TextView>(R.id.ab_notes).setOnClickListener {
             startActivity(Intent(this, Notes::class.java))
         }
+
+        findViewById<TextView>(R.id.ab_flight).setOnClickListener {
+            startActivity(Intent(this, Notes::class.java))
+        }
     }
 
     override fun onResume() {

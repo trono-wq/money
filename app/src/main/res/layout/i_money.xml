@@ -83,6 +83,33 @@
             android:textColor="#d39a00"
             android:clickable="true"
             android:focusable="true"/>
+
+        <!-- SEPARATOR - Layout, Styling -->
+        <TextView
+            android:text="@string/ab_separator"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#d39a00"/>
+
+        <!-- CALCULATOR - Layout, Styling, Interact -->
+        <TextView
+            android:id="@+id/ab_flight"
+            android:text="Flight"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:textColor="#d39a00"
+
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
     <!-- DEBT / CREDIT BUTTONS -->
@@ -91,31 +118,62 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/main_action_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- WM - Layout, Font -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/b_ab_debt"
             android:text="@string/b_ab_debt"
-            android:layout_width="0dp"
+
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#666666"
+
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textAllCaps="false" />
+
+        <!-- WEEK - Layout, Font -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/b_ab_credit"
+            android:text="@string/b_ab_credit"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#666666"
+
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textAllCaps="false"/>
 
+        <!-- DEBT - Layout, Font -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/b_ab_credit"
-            android:text="@string/b_ab_credit"
-            android:layout_width="0dp"
+
+            android:id="@+id/b_clear_all"
+            android:text="@string/b_clear_all"
+
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#666666"
+
             android:textColor="#FFFFFF"
             android:textSize="15sp"
+            android:textAllCaps="false"/>
+
+        <!-- CREDIT - Layout, Font -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/save"
+            android:text="@string/b_save"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#666666"
+
+            android:textColor="#FFFFFF"
             android:textAllCaps="false"/>
     </LinearLayout>
 
@@ -123,7 +181,6 @@
     <LinearLayout
         android:id="@+id/content_container"
         android:layout_width="0dp"
-        android:layout_weight="0"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_marginTop="5dp"
@@ -135,9 +192,11 @@
         <!-- SCROLLABLE HORIZONTAL CONTENT -->
         <ScrollView
             android:id="@+id/scroll_view"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+
             android:fillViewport="false"
             android:scrollbars="vertical">
 
@@ -382,38 +441,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <!-- BOTTOM BUTTONS -->
-        <LinearLayout
-            android:id="@+id/bottom_button_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/b_clear_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#666666"
-                android:text="@string/b_clear_all"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#666666"
-                android:text="@string/b_save"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"/>
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
