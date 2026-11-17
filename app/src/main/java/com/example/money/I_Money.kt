@@ -299,11 +299,11 @@ class Money : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.ab_flight).setOnClickListener {
-            startActivity(Intent(this, Notes::class.java))
+            startActivity(Intent(this, Flight::class.java))
         }
 
         findViewById<TextView>(R.id.ab_notes).setOnClickListener {
-            startActivity(Intent(this, Calculator::class.java))
+            startActivity(Intent(this, Notes::class.java))
         }
 
         updateSaveButton()

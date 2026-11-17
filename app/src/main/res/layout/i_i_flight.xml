@@ -139,16 +139,18 @@
             android:focusable="true"/>
     </LinearLayout>
 
+    <!-- FLIGHT IMAGE - Layout, Position, Styling -->
     <ImageView
         android:id="@+id/flight"
 
         android:layout_width="576dp"
         android:layout_height="647dp"
 
-        android:contentDescription="Picture"
-        android:scaleType="fitCenter"
-
         android:src="@drawable/flight"
-        tools:layout_editor_absoluteX="-43dp"
-        tools:layout_editor_absoluteY="68dp" />
+        android:scaleType="fitCenter"
+        android:contentDescription="Picture"
+
+        app:layout_constraintTop_toBottomOf="@id/main_action_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

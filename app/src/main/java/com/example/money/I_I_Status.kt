@@ -63,7 +63,7 @@ class Status : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.ab_flight).setOnClickListener {
-            startActivity(Intent(this, Notes::class.java))
+            startActivity(Intent(this, Flight::class.java))
         }
     }
 

@@ -126,7 +126,7 @@
         <!-- CALCULATOR - Layout, Styling, Interact -->
         <TextView
             android:id="@+id/ab_flight"
-            android:text="Flight"
+            android:text="F"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

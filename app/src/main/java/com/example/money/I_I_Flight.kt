@@ -48,6 +48,6 @@ class Flight : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.ab_money).setOnClickListener {
-            startActivity(Intent(this, Status::class.java))
+            startActivity(Intent(this, Money::class.java))
         }
     }}
