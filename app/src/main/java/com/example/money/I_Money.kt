@@ -302,8 +302,12 @@ class Money : AppCompatActivity() {
             startActivity(Intent(this, Notes::class.java))
         }
 
-        findViewById<Button>(R.id.ab_history).setOnClickListener {
-            startActivity(Intent(this, History::class.java))
+        findViewById<TextView>(R.id.b_ab_debt).setOnClickListener {
+            startActivity(Intent(this, Debt::class.java))
+        }
+
+        findViewById<TextView>(R.id.b_ab_credit).setOnClickListener {
+            startActivity(Intent(this, Credit::class.java))
         }
 
         updateSaveButton()

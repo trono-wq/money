@@ -37,14 +37,6 @@ class History : AppCompatActivity() {
 
         findViewById<TextView>(R.id.ab_money).setOnClickListener {finish()}
 
-        findViewById<TextView>(R.id.b_ab_week).setOnClickListener {
-            startActivity(Intent(this, Week::class.java))
-        }
-
-        findViewById<TextView>(R.id.b_ab_wm).setOnClickListener {
-            startActivity(Intent(this, Wm::class.java))
-        }
-
         findViewById<TextView>(R.id.b_ab_debt).setOnClickListener {
             startActivity(Intent(this, Debt::class.java))
         }

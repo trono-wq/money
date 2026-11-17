@@ -59,7 +59,7 @@
     </LinearLayout>
 
     <!-- SCROLL -->
-    <ScrollView
+    <LinearLayout
         android:id="@+id/no"
 
         android:layout_width="0dp"
@@ -78,32 +78,6 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginTop="5dp">
-
-            <!-- WM - Layout, Font -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/b_ab_wm"
-                android:text="@string/b_ab_wm"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#666666"
-
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textAllCaps="false" />
-
-            <!-- WEEK - Layout, Font -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/b_ab_week"
-                android:text="@string/b_ab_week"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#666666"
-
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textAllCaps="false"/>
 
             <!-- DEBT - Layout, Font -->
             <androidx.appcompat.widget.AppCompatButton
@@ -130,7 +104,7 @@
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"/>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <!-- SCROLL -->
     <ScrollView

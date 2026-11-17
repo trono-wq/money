@@ -44,7 +44,7 @@
         <!-- HISTORY - Layout, Font, Interact -->
         <TextView
             android:id="@+id/b_ab_history"
-            android:text="@string/b_ab_history"
+            android:text="@string/ab_money"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

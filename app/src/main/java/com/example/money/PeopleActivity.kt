@@ -449,7 +449,7 @@ abstract class PeopleActivity : AppCompatActivity() {
         // EXPAND / COLLAPSE BUTTON
 
         val arrow = Button(this).apply {
-            text = if (key in expanded) "^" else "v"
+            text = if (key in expanded) "∧" else "v"
             textSize = 10f
             setTextColor(white)
             setPadding(0, 0, 0, 0)
