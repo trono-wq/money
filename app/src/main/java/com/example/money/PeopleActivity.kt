@@ -1,4 +1,5 @@
 
+
 package com.example.money
 
 import android.content.res.ColorStateList
@@ -168,7 +169,7 @@ abstract class PeopleActivity : AppCompatActivity() {
             canSave = false
 
             editButton.text = "Edit"
-            editButton.isEnabled = true
+            editButton.isEnabled = entries.sumOf { it.amount } > 0.0
             editButton.backgroundTintList =
                 ColorStateList.valueOf(gray)
 
@@ -709,6 +710,7 @@ abstract class PeopleActivity : AppCompatActivity() {
         if (!editing || !canSave) return
 
         val updated = mutableListOf<PersonEntry>()
+        var totalDecrease = 0.0
 
         // VALIDATE AND UPDATE EACH ORIGINAL ENTRY
 
@@ -728,6 +730,8 @@ abstract class PeopleActivity : AppCompatActivity() {
                 updateSaveButton()
                 return
             }
+
+            totalDecrease += entry.amount - newAmount
 
             updated.add(
                 entry.copy(
@@ -750,13 +754,24 @@ abstract class PeopleActivity : AppCompatActivity() {
             .flatten()
             .toMutableList()
 
-        // SAVE
+        // SAVE THE UPDATED HISTORY FIRST.
 
         MoneyData.replacePeople(
             this,
             isDebt,
             remaining
         )
+
+        // RETURN THE REDUCED AMOUNT TO THE CORRESPONDING MONEY TOTAL.
+        // APPLY THIS ONLY AFTER THE HISTORY SAVE IS COMMITTED.
+
+        if (totalDecrease > 0.0) {
+            if (isDebt) {
+                MoneyData.addToSpent(this, totalDecrease)
+            } else {
+                MoneyData.addToAllowance(this, totalDecrease)
+            }
+        }
 
         entries = remaining
 

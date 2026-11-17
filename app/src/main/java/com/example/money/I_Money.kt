@@ -1,4 +1,5 @@
 
+
 package com.example.money
 
 import android.app.DatePickerDialog
@@ -38,6 +39,7 @@ class Money : AppCompatActivity() {
     private lateinit var allowanceInput: EditText
     private lateinit var spentInput: EditText
     private lateinit var saveButton: Button
+    private lateinit var clearAllButton: Button
 
     private lateinit var enterBar: LinearLayout
     private lateinit var inputBar: LinearLayout
@@ -83,6 +85,12 @@ class Money : AppCompatActivity() {
         allowanceInput = findViewById(R.id.m_i_allowance)
         spentInput = findViewById(R.id.m_i_spent)
         saveButton = findViewById(R.id.save)
+        clearAllButton = findViewById(R.id.b_clear_all)
+        clearAllButton.visibility = View.GONE
+
+        clearAllButton.setOnClickListener {
+            clearAllInputs()
+        }
 
         enterBar = findViewById(R.id.enter_bar)
         inputBar = findViewById(R.id.input_bar)
@@ -308,7 +316,7 @@ class Money : AppCompatActivity() {
         if (hasDuplicateNames(debtInputs) || hasDuplicateNames(creditInputs)) {
             return false
         }
-        
+
         val hasAllowance = allowanceInput.text.isNotBlank()
         val hasSpent = spentInput.text.isNotBlank()
 
@@ -360,6 +368,40 @@ class Money : AppCompatActivity() {
             if (valid) android.graphics.Typeface.BOLD
             else android.graphics.Typeface.NORMAL
         )
+
+        clearAllButton.visibility =
+            if (valid) View.VISIBLE else View.GONE
+    }
+
+    // CLEAR ALL INPUTS
+
+    private fun clearAllInputs() {
+
+        isCompactingEntries = true
+
+        try {
+            dateInput.text.clear()
+            allowanceInput.text.clear()
+            spentInput.text.clear()
+
+            debtInputs.forEach { entry ->
+                entry.amount.text.clear()
+                entry.name.text.clear()
+            }
+
+            creditInputs.forEach { entry ->
+                entry.amount.text.clear()
+                entry.name.text.clear()
+            }
+
+            removeExtraEntries(debtInputs, enterBar, inputBar)
+            removeExtraEntries(creditInputs, enterBar, inputBar)
+
+        } finally {
+            isCompactingEntries = false
+        }
+
+        updateSaveButton()
     }
 
     // SAVE DATA

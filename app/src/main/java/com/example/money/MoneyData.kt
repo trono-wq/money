@@ -1,9 +1,11 @@
-
 package com.example.money
 
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import java.util.UUID
 
 data class MoneyEntry(
@@ -80,10 +82,10 @@ object MoneyData {
     ) {
         val entries = getMoneyEntries(context)
 
-        // Remove any existing entry for this date.
+        // REMOVE ANY EXISTING ENTRY FOR THIS DATE.
         entries.removeAll { it.date == date }
 
-        // Add the replacement entry.
+        // ADD THE REPLACEMENT ENTRY.
         entries.add(
             MoneyEntry(
                 date = date,
@@ -113,6 +115,52 @@ object MoneyData {
         }
 
         writeArray(context, MONEY_KEY, array)
+    }
+
+    // ADJUST MONEY TOTALS AFTER CREDIT / DEBT HISTORY EDITS
+
+    fun addToAllowance(context: Context, amount: Double) {
+        adjustMoneyTotal(context, amount, adjustAllowance = true)
+    }
+
+    fun addToSpent(context: Context, amount: Double) {
+        adjustMoneyTotal(context, amount, adjustAllowance = false)
+    }
+
+    private fun adjustMoneyTotal(
+        context: Context,
+        amount: Double,
+        adjustAllowance: Boolean
+    ) {
+        if (amount <= 0.0) return
+
+        val entries = getMoneyEntries(context)
+
+        if (entries.isEmpty()) {
+            val today = SimpleDateFormat(
+                "dd / MM / yyyy (EEEE)",
+                Locale.ENGLISH
+            ).format(Calendar.getInstance().time)
+
+            entries.add(
+                MoneyEntry(
+                    date = today,
+                    allowance = if (adjustAllowance) amount else 0.0,
+                    spent = if (adjustAllowance) 0.0 else amount
+                )
+            )
+        } else {
+            val lastIndex = entries.lastIndex
+            val lastEntry = entries[lastIndex]
+
+            entries[lastIndex] = if (adjustAllowance) {
+                lastEntry.copy(allowance = lastEntry.allowance + amount)
+            } else {
+                lastEntry.copy(spent = lastEntry.spent + amount)
+            }
+        }
+
+        saveMoney(context, entries)
     }
 
     // DEBT / CREDIT ENTRIES
@@ -197,7 +245,6 @@ object MoneyData {
         // MONEY
         val moneyEntries = getMoneyEntries(context)
         moneyEntries.removeAll { it.date == date }
-
         moneyEntries.add(
             MoneyEntry(
                 date = date,
@@ -250,7 +297,7 @@ object MoneyData {
 
     fun formatAmount(value: Double): String {
         return String.format(
-            java.util.Locale.US,
+            Locale.US,
             "%,.2f",
             value
         ).trimEnd('0').trimEnd('.')
