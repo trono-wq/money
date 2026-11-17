@@ -32,6 +32,8 @@ class Money : AppCompatActivity() {
     private val debtInputs = mutableListOf<InputPair>()
     private val creditInputs = mutableListOf<InputPair>()
 
+    private var isCompactingEntries = false
+
     private lateinit var dateInput: EditText
     private lateinit var allowanceInput: EditText
     private lateinit var spentInput: EditText
@@ -103,6 +105,9 @@ class Money : AppCompatActivity() {
 
         debtInputs.add(firstDebt)
         creditInputs.add(firstCredit)
+
+        watchForEmptyEntry(firstDebt, debtInputs)
+        watchForEmptyEntry(firstCredit, creditInputs)
 
         // DATE PICKER
 
@@ -300,6 +305,10 @@ class Money : AppCompatActivity() {
 
     private fun hasValidInput(): Boolean {
 
+        if (hasDuplicateNames(debtInputs) || hasDuplicateNames(creditInputs)) {
+            return false
+        }
+        
         val hasAllowance = allowanceInput.text.isNotBlank()
         val hasSpent = spentInput.text.isNotBlank()
 
@@ -461,7 +470,7 @@ class Money : AppCompatActivity() {
         }
     }
 
-    // AUTOMATICALLY COLLAPSE EMPTY GROUPS
+    // AUTOMATICALLY COMPACT EMPTY GROUPS
 
     private fun watchForEmptyEntry(
         entry: InputPair,
@@ -486,16 +495,13 @@ class Money : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
 
+                if (isCompactingEntries) return
+
                 if (
                     entry.amount.text.isBlank() &&
                     entry.name.text.isBlank()
                 ) {
-                    removeEmptyEntry(
-                        entry,
-                        entries,
-                        enterBar,
-                        inputBar
-                    )
+                    compactEntries(entries)
                 }
             }
         }
@@ -504,39 +510,68 @@ class Money : AppCompatActivity() {
         entry.name.addTextChangedListener(watcher)
     }
 
-    // REMOVE ONE EMPTY GROUP
+    // COMPACT INPUT GROUPS
 
-    private fun removeEmptyEntry(
-        entry: InputPair,
-        entries: MutableList<InputPair>,
-        labelContainer: LinearLayout,
-        inputContainer: LinearLayout
+    private fun compactEntries(
+        entries: MutableList<InputPair>
     ) {
 
-        val index = entries.indexOf(entry)
+        if (isCompactingEntries) return
 
-        // NEVER REMOVE THE FIRST PERMANENT GROUP
+        isCompactingEntries = true
 
-        if (index <= 0) return
+        try {
 
-        // REMOVE BOTH LABELS
+            // COLLECT NON-EMPTY ENTRIES
 
-        entry.amountLabel?.let {
-            labelContainer.removeView(it)
+            val remainingEntries = entries.mapNotNull { entry ->
+
+                val amount = entry.amount.text.toString()
+                val name = entry.name.text.toString()
+
+                if (amount.isBlank() && name.isBlank()) {
+                    null
+                } else {
+                    Pair(amount, name)
+                }
+            }
+
+            // MOVE VALUES UPWARD
+
+            for (i in remainingEntries.indices) {
+
+                val entry = entries[i]
+                val values = remainingEntries[i]
+
+                entry.amount.setText(values.first)
+                entry.name.setText(values.second)
+            }
+
+            // REMOVE UNUSED EXTRA ROWS
+
+            val requiredCount = maxOf(1, remainingEntries.size)
+
+            for (i in entries.lastIndex downTo requiredCount) {
+
+                val entry = entries[i]
+
+                entry.amountLabel?.let {
+                    enterBar.removeView(it)
+                }
+
+                entry.nameLabel?.let {
+                    enterBar.removeView(it)
+                }
+
+                inputBar.removeView(entry.amount)
+                inputBar.removeView(entry.name)
+
+                entries.removeAt(i)
+            }
+
+        } finally {
+            isCompactingEntries = false
         }
-
-        entry.nameLabel?.let {
-            labelContainer.removeView(it)
-        }
-
-        // REMOVE BOTH INPUTS
-
-        inputContainer.removeView(entry.amount)
-        inputContainer.removeView(entry.name)
-
-        // REMOVE FROM TRACKED INPUTS
-
-        entries.removeAt(index)
 
         updateSaveButton()
     }
@@ -788,5 +823,13 @@ class Money : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun hasDuplicateNames(entries: List<InputPair>): Boolean {
+        val names = entries
+            .map { it.name.text.toString().trim().lowercase(Locale.ROOT) }
+            .filter { it.isNotBlank() }
+
+        return names.size != names.distinct().size
     }
 }
