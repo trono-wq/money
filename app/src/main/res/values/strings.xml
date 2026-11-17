@@ -89,8 +89,6 @@
     <string name="m_b_debt">        +</string>
     <string name="m_b_credit">      +</string>
 
-    <string name="m_b_r_credit">    -</string>
-
     <string name="n_input">         Notes</string>
 
     <string name="s_lb_spent">      Total spent:</string>

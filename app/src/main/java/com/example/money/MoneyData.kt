@@ -80,6 +80,10 @@ object MoneyData {
     ) {
         val entries = getMoneyEntries(context)
 
+        // Remove any existing entry for this date.
+        entries.removeAll { it.date == date }
+
+        // Add the replacement entry.
         entries.add(
             MoneyEntry(
                 date = date,
@@ -88,6 +92,13 @@ object MoneyData {
             )
         )
 
+        saveMoney(context, entries)
+    }
+
+    private fun saveMoney(
+        context: Context,
+        entries: List<MoneyEntry>
+    ) {
         val array = JSONArray()
 
         entries.forEach { entry ->
@@ -171,6 +182,45 @@ object MoneyData {
         }
 
         writeArray(context, key, array)
+    }
+
+    // REPLACE ALL ENTRIES FOR ONE DATE
+
+    fun replaceDateEntries(
+        context: Context,
+        date: String,
+        allowance: Double,
+        spent: Double,
+        debts: List<PersonEntry>,
+        credits: List<PersonEntry>
+    ) {
+        // MONEY
+        val moneyEntries = getMoneyEntries(context)
+        moneyEntries.removeAll { it.date == date }
+
+        moneyEntries.add(
+            MoneyEntry(
+                date = date,
+                allowance = allowance,
+                spent = spent
+            )
+        )
+
+        saveMoney(context, moneyEntries)
+
+        // DEBT
+        val debtEntries = getPeople(context, true)
+        debtEntries.removeAll { it.date == date }
+        debtEntries.addAll(debts)
+
+        savePeople(context, DEBT_KEY, debtEntries)
+
+        // CREDIT
+        val creditEntries = getPeople(context, false)
+        creditEntries.removeAll { it.date == date }
+        creditEntries.addAll(credits)
+
+        savePeople(context, CREDIT_KEY, creditEntries)
     }
 
     // TOTALS

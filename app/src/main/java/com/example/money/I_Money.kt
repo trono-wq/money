@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ViewCompat
 import java.util.Calendar
 import java.util.Locale
-import java.text.SimpleDateFormat
 
 class Money : AppCompatActivity() {
 
@@ -106,11 +105,50 @@ class Money : AppCompatActivity() {
         // DATE PICKER
 
         findViewById<Button>(R.id.m_b_date).setOnClickListener {
-            dateInput.setText(formatDate(Calendar.getInstance()))
+            dateInput.setText(
+                java.text.SimpleDateFormat(
+                    "dd / MM / yyyy (EEEE)",
+                    Locale.ENGLISH
+                ).format(java.util.Date())
+            )
         }
 
         dateInput.setOnClickListener {
-            showDatePicker()
+
+            val calendar = Calendar.getInstance()
+
+            val dialog = DatePickerDialog(
+                this,
+                { _, year, month, day ->
+
+                    val selected = Calendar.getInstance().apply {
+                        set(year, month, day)
+                    }
+
+                    dateInput.setText(
+                        java.text.SimpleDateFormat(
+                            "dd / MM / yyyy (EEEE)",
+                            Locale.ENGLISH
+                        ).format(selected.time)
+                    )
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+
+            // PREVENT FUTURE DATES
+
+            val today = Calendar.getInstance()
+
+            today.set(Calendar.HOUR_OF_DAY, 23)
+            today.set(Calendar.MINUTE, 59)
+            today.set(Calendar.SECOND, 59)
+            today.set(Calendar.MILLISECOND, 999)
+
+            dialog.datePicker.maxDate = today.timeInMillis
+
+            dialog.show()
         }
 
         // NUMBER INPUT FORMATTING
@@ -311,7 +349,8 @@ class Money : AppCompatActivity() {
         )
     }
 
-    // SAVE DATA
+
+// SAVE DATA
 
     private fun saveEntries() {
 
@@ -325,13 +364,6 @@ class Money : AppCompatActivity() {
 
         val spent = MoneyData.parseAmount(
             spentInput.text.toString()
-        )
-
-        MoneyData.addMoneyEntry(
-            this,
-            date,
-            allowance,
-            spent
         )
 
         val debts = debtInputs
@@ -364,8 +396,18 @@ class Money : AppCompatActivity() {
                 )
             }
 
-        MoneyData.addPeople(this, true, debts)
-        MoneyData.addPeople(this, false, credits)
+        // REPLACE EXISTING DATE ENTRIES
+
+        MoneyData.replaceDateEntries(
+            this,
+            date,
+            allowance,
+            spent,
+            debts,
+            credits
+        )
+
+        // CLEAR INPUTS
 
         dateInput.text.clear()
         allowanceInput.text.clear()
@@ -518,48 +560,9 @@ class Money : AppCompatActivity() {
 
     // NUMBER FORMATTING
 
-    private fun formatDate(calendar: Calendar): String {
-        return SimpleDateFormat("dd / MM / yyyy (EEEE)", Locale.ENGLISH)
-            .format(calendar.time)
-    }
-
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-
-        val dialog = DatePickerDialog(
-            this,
-            { _, year, month, day ->
-                calendar.set(year, month, day)
-                dateInput.setText(formatDate(calendar))
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        // Prevent selecting future dates
-        val today = Calendar.getInstance()
-        today.set(Calendar.HOUR_OF_DAY, 23)
-        today.set(Calendar.MINUTE, 59)
-        today.set(Calendar.SECOND, 59)
-        today.set(Calendar.MILLISECOND, 999)
-
-        dialog.datePicker.maxDate = today.timeInMillis
-
-        dialog.show()
-    }
-
-    // NUMBER INPUT FORMATTING
-
     private fun formatNumberInput(editText: EditText) {
 
-        editText.inputType =
-            InputType.TYPE_CLASS_NUMBER or
-                    InputType.TYPE_NUMBER_FLAG_DECIMAL
-
         editText.addTextChangedListener(object : TextWatcher {
-
-            private var current = ""
 
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -577,35 +580,82 @@ class Money : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
 
+                if (s == null) return
+
                 val original = s.toString()
+                val cursor = editText.selectionStart.coerceAtLeast(0)
 
-                if (original == current) return
+                val digitsBeforeCursor = original
+                    .take(cursor.coerceAtMost(original.length))
+                    .count { it.isDigit() }
 
-                val clean = original.replace(",", "")
+                val clean = original.replace(" ", "")
 
-                val parts = clean.split(".")
-
-                val formatted = buildString {
-
-                    parts[0].reversed().forEachIndexed { index, char ->
-                        if (index > 0 && index % 3 == 0) {
-                            append(",")
-                        }
-                        append(char)
-                    }
-
-                    append(parts[0].reversed().reversed())
-
-                    if (parts.size > 1) {
-                        append(".")
-                        append(parts.drop(1).joinToString(""))
-                    }
+                if (clean.startsWith("0")) {
+                    editText.removeTextChangedListener(this)
+                    editText.setText(clean.dropWhile { it == '0' })
+                    editText.setSelection(editText.text.length)
+                    editText.addTextChangedListener(this)
+                    return
                 }
 
-                current = formatted
+                if (clean.startsWith(".")) {
+                    editText.removeTextChangedListener(this)
+                    editText.setText("0$clean")
+                    editText.setSelection(editText.text.length)
+                    editText.addTextChangedListener(this)
+                    return
+                }
 
-                editText.setText(formatted)
-                editText.setSelection(formatted.length)
+                val parts = clean.split(".", limit = 2)
+
+                val integerPart = parts[0]
+                val decimalPart =
+                    if (parts.size > 1) parts[1] else null
+
+                val formattedInteger = integerPart
+                    .reversed()
+                    .chunked(3)
+                    .joinToString(" ") { it.reversed() }
+                    .split(" ")
+                    .reversed()
+                    .joinToString(" ")
+
+                val formattedDecimal = decimalPart
+                    ?.chunked(3)
+                    ?.joinToString(" ")
+
+                val formatted =
+                    if (decimalPart != null) {
+                        "$formattedInteger.$formattedDecimal"
+                    } else {
+                        formattedInteger
+                    }
+
+                if (original != formatted) {
+
+                    editText.removeTextChangedListener(this)
+                    editText.setText(formatted)
+
+                    var newCursor = 0
+                    var digitCount = 0
+
+                    while (
+                        newCursor < formatted.length &&
+                        digitCount < digitsBeforeCursor
+                    ) {
+                        if (formatted[newCursor].isDigit()) {
+                            digitCount++
+                        }
+                        newCursor++
+                    }
+
+                    editText.setSelection(
+                        newCursor.coerceAtMost(formatted.length)
+                    )
+
+                    editText.addTextChangedListener(this)
+                }
             }
         })
     }

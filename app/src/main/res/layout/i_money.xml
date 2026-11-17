@@ -236,7 +236,7 @@
                             android:layout_width="25dp"
                             android:layout_height="30dp"
                             android:backgroundTint="#666666"
-                            android:text="@string/m_b_r_credit"
+                            android:text="@string/m_b_credit"
                             android:textColor="#FFFFFF"
                             android:padding="0dp"
                             android:textStyle="bold"/>
