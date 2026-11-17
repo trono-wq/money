@@ -143,14 +143,16 @@
     <ImageView
         android:id="@+id/flight"
 
-        android:layout_width="576dp"
-        android:layout_height="647dp"
+        android:layout_width="537dp"
+        android:layout_height="594dp"
+
+        android:layout_marginTop="36dp"
+        android:contentDescription="Picture"
+        android:scaleType="fitCenter"
 
         android:src="@drawable/flight"
-        android:scaleType="fitCenter"
-        android:contentDescription="Picture"
-
-        app:layout_constraintTop_toBottomOf="@id/main_action_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.293"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/main_action_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

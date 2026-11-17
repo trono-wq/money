@@ -31,6 +31,9 @@
         <activity android:name=".Debt" android:exported="false" />
         <activity android:name=".Week" android:exported="false" />
         <activity android:name=".Wm" android:exported="false" />
+        <activity
+            android:name=".Flight"
+            android:exported="false" />
 
     </application>
 
