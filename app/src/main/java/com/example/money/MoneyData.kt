@@ -146,7 +146,7 @@ object MoneyData {
 
         if (entries.isEmpty()) {
             val today = SimpleDateFormat(
-                "dd / MM / yyyy (EEEE)",
+                "MM / dd / yyyy (EEEE)",
                 Locale.ENGLISH
             ).format(Calendar.getInstance().time)
 

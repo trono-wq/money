@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ViewCompat
 import java.util.Locale
 import android.graphics.Typeface
+import java.text.SimpleDateFormat
 
 abstract class PeopleActivity : AppCompatActivity() {
 
@@ -133,12 +134,28 @@ abstract class PeopleActivity : AppCompatActivity() {
         renderEntries()
     }
 
-    // GROUP ENTRIES BY PERSON
-
+    // GROUP ENTRIES BY PERSON AND SORT BY DATE
     private fun groupedEntries(): Map<String, List<PersonEntry>> {
-        return entries.groupBy {
-            it.name.trim().lowercase(Locale.ROOT)
+
+        val dateFormat = SimpleDateFormat(
+            "MM / dd / yyyy (EEEE)",
+            Locale.ENGLISH
+        ).apply {
+            isLenient = false
         }
+
+        return entries
+            .groupBy {
+                it.name.trim().lowercase(Locale.ROOT)
+            }
+            .mapValues { (_, group) ->
+
+                group.sortedBy { entry ->
+                    runCatching {
+                        dateFormat.parse(entry.date)?.time
+                    }.getOrNull() ?: Long.MAX_VALUE
+                }
+            }
     }
 
     private fun displayName(group: List<PersonEntry>): String {
@@ -455,7 +472,7 @@ abstract class PeopleActivity : AppCompatActivity() {
             setTextColor(white)
             setPadding(0, 0, 0, 0)
 
-            setTypeface(null, if (key !in expanded) Typeface.BOLD else Typeface.NORMAL)
+            setTypeface(null, if (key in expanded) Typeface.BOLD else Typeface.NORMAL)
 
             backgroundTintList =
                 ColorStateList.valueOf(gray)

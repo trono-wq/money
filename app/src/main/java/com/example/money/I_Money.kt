@@ -122,7 +122,7 @@ class Money : AppCompatActivity() {
         findViewById<Button>(R.id.m_b_date).setOnClickListener {
             dateInput.setText(
                 java.text.SimpleDateFormat(
-                    "dd / MM / yyyy (EEEE)",
+                    "MM / dd / yyyy (EEEE)",
                     Locale.ENGLISH
                 ).format(java.util.Date())
             )
@@ -142,7 +142,7 @@ class Money : AppCompatActivity() {
 
                     dateInput.setText(
                         java.text.SimpleDateFormat(
-                            "dd / MM / yyyy (EEEE)",
+                            "MM / dd / yyyy (EEEE)",
                             Locale.ENGLISH
                         ).format(selected.time)
                     )
