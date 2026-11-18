@@ -117,6 +117,14 @@ object MoneyData {
         writeArray(context, MONEY_KEY, array)
     }
 
+    fun replaceMoneyEntries(
+        context: Context,
+        entries: List<MoneyEntry>
+    ) {
+        saveMoney(context, entries)
+    }
+
+
     // ADJUST MONEY TOTALS AFTER CREDIT / DEBT HISTORY EDITS
 
     fun addToAllowance(context: Context, amount: Double) {
