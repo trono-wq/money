@@ -20,6 +20,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ViewCompat
 import java.util.Locale
+import android.graphics.Typeface
 
 abstract class PeopleActivity : AppCompatActivity() {
 
@@ -453,6 +454,8 @@ abstract class PeopleActivity : AppCompatActivity() {
             textSize = 10f
             setTextColor(white)
             setPadding(0, 0, 0, 0)
+
+            setTypeface(null, if (key !in expanded) Typeface.BOLD else Typeface.NORMAL)
 
             backgroundTintList =
                 ColorStateList.valueOf(gray)
