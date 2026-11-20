@@ -194,8 +194,8 @@
             android:id="@+id/scroll_view"
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_height="0dp"
+            android:layout_weight="1"
 
             android:fillViewport="false"
             android:scrollbars="vertical">
@@ -223,7 +223,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -249,7 +249,7 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:padding="5dp"
                             android:text="@string/m_lb_allowance"
                             android:textColor="#FFFFFF"
@@ -264,7 +264,7 @@
 
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="35dp"
                                 android:layout_weight="1"
                                 android:padding="5dp"
                                 android:text="@string/m_lb_debt"
@@ -284,7 +284,7 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:padding="5dp"
                             android:text="@string/m_lb_debt_n"
                             android:textColor="#666666"
@@ -299,7 +299,7 @@
 
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="35dp"
                                 android:layout_weight="1"
                                 android:padding="5dp"
                                 android:text="@string/m_lb_credit"
@@ -320,7 +320,7 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:padding="5dp"
                             android:text="@string/m_lb_credit_n"
                             android:textColor="#666666"
@@ -328,7 +328,7 @@
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="32dp"
+                            android:layout_height="35dp"
                             android:padding="5dp"
                             android:text="@string/m_lb_spent"
                             android:textColor="#FFFFFF"
@@ -346,8 +346,8 @@
 
                         <EditText
                             android:id="@+id/m_i_date"
-                            android:layout_width="285dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:clickable="false"
                             android:focusable="false"
@@ -362,7 +362,7 @@
                         <EditText
                             android:id="@+id/m_i_allowance"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_allowance"
                             android:importantForAutofill="no"
@@ -375,7 +375,7 @@
                         <EditText
                             android:id="@+id/m_i_debt"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_debt"
                             android:importantForAutofill="no"
@@ -388,7 +388,7 @@
                         <EditText
                             android:id="@+id/m_i_debt_n"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_debt_n"
                             android:importantForAutofill="no"
@@ -401,7 +401,7 @@
                         <EditText
                             android:id="@+id/m_i_credit"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_credit"
                             android:importantForAutofill="no"
@@ -414,7 +414,7 @@
                         <EditText
                             android:id="@+id/m_i_credit_n"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_credit_n"
                             android:importantForAutofill="no"
@@ -427,7 +427,7 @@
                         <EditText
                             android:id="@+id/m_i_spent"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:background="@null"
                             android:hint="@string/m_i_spent"
                             android:importantForAutofill="no"
@@ -440,7 +440,5 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
